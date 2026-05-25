@@ -40,7 +40,27 @@
   --sh2:0 4px 20px rgba(100,80,40,.15);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;}
+body{
+  font-family:'Tajawal',sans-serif;
+  background:var(--bg);
+  color:var(--tx);
+  min-height:100vh;
+}
+body::before{
+  content:'سيمنتكس';
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(-30deg);
+  font-family:'Tajawal',sans-serif;
+  font-size:clamp(80px,14vw,180px);
+  font-weight:900;
+  color:rgba(139,105,20,0.055);
+  white-space:nowrap;
+  pointer-events:none;
+  z-index:0;
+  user-select:none;
+  letter-spacing:8px;
+}
 
 /* ── Upload ── */
 .uscreen{position:fixed;inset:0;background:#3A2E1E;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;}
@@ -233,6 +253,14 @@ document.addEventListener('mousemove',function(e){if(_tt.classList.contains('on'
     <button class="uz-btn" onclick="event.stopPropagation();document.getElementById('fi').click()">📎 اختر الملف</button>
     <input type="file" id="fi" accept=".xlsx,.xls" onchange="handleFile(this.files[0])">
   </div>
+  <div style="margin-top:16px;text-align:center">
+    <div style="color:#A89070;font-size:12px;margin-bottom:10px">— أو —</div>
+    <button onclick="loadFromGoogleSheets()" style="background:#0F9D58;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;margin:0 auto;box-shadow:0 4px 12px rgba(15,157,88,.3)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.372 0 0 5.373 0 12s5.372 12 12 12 12-5.373 12-12S18.628 0 12 0zm-1.25 17.292l-4.5-4.364 1.857-1.857 2.643 2.506 5.643-5.643 1.857 1.857-7.5 7.501z"/></svg>
+      تحديث من Google Sheets
+    </button>
+    <div style="color:#7A6848;font-size:11px;margin-top:8px">يتحدث تلقائياً من الملف المشترك مع الفريق</div>
+  </div>
 </div>
 
 <!-- LOADING -->
@@ -256,6 +284,7 @@ document.addEventListener('mousemove',function(e){if(_tt.classList.contains('on'
     <span class="badge bm" id="tb-period">📅 —</span>
     <span class="badge" id="tb-pct" style="display:none">—</span>
     <button class="btn-sm" onclick="reloadFile()">📂 ملف جديد</button>
+    <button class="btn-sm" onclick="loadFromGoogleSheets()" style="background:#0F9D58;color:#fff;border-color:#0F9D58">🔄 تحديث من Sheets</button>
   <button class="btn-sm" id="ppt-btn" onclick="exportPPT()" style="background:#1a1a2e;border:1.5px solid #c0392b;color:#c0392b;display:none">📊 تصدير PowerPoint</button>
   </div>
 </div>
@@ -391,6 +420,64 @@ const ML={daily:'يومي',monthly:'شهري',quarter:'ربع سنوي',half:'ن
 /* ══════════════════════════════════════
    FILE READING
    ══════════════════════════════════════ */
+// ── تحميل تلقائي من Google Sheets ──
+var GSHEET_ID='1cJzfFqJ2T-lpmFs348vswhfqZVdTfbjTdhvLmZA9lqw';
+var GSHEET_URL='https://docs.google.com/spreadsheets/d/'+GSHEET_ID+'/export?format=xlsx';
+
+function loadFromGoogleSheets(){
+  showLdg(true,'جاري تحميل البيانات من Google Sheets...');
+  fetch(GSHEET_URL)
+    .then(function(r){
+      if(!r.ok)throw new Error('فشل التحميل — تأكد إن الملف عام (Public)');
+      return r.arrayBuffer();
+    })
+    .then(function(buf){
+      showLdg(true,'جاري تحليل البيانات...');
+      try{
+        var wb=XLSX.read(buf,{type:'array',cellDates:true});
+        var sn=wb.SheetNames.find(function(s){return s.toLowerCase().includes('data');})||wb.SheetNames[0];
+        var json=XLSX.utils.sheet_to_json(wb.Sheets[sn],{defval:null,raw:false,dateNF:'YYYY-MM-DD'});
+        if(!json.length){alert('الملف فارغ!');showLdg(false);return;}
+        var rawHeaders=Object.keys(json[0]);
+        var headers=rawHeaders.map(function(h){return String(h).replace(/\n/g,' ').trim();});
+        var mapping=autoMap(headers,rawHeaders);
+        DB=parseDB(json,rawHeaders,mapping);
+        BRANCHES=Object.keys(DB).sort();
+        BRANCHES.forEach(function(b){
+          var avgMixT=DB[b]._mixTcount>0?DB[b]._mixTsum/DB[b]._mixTcount:0;
+          if(avgMixT>0&&DB[b].target){
+            DB[b].mixerTarget=+(DB[b].target/avgMixT).toFixed(2);
+            DB[b].mixerDayTarget=+(DB[b].mixerTarget/26).toFixed(2);
+            DB[b].tripsDayTarget=+(DB[b].mixerDayTarget/8).toFixed(2);
+          }
+        });
+        var pptBtn=document.getElementById('ppt-btn');
+        if(pptBtn)pptBtn.style.display='';
+        ACTIVE_BRANCHES=BRANCHES.slice();
+        BRANCH_FILTER='all';
+        var bsel=document.getElementById('gf-branch');
+        bsel.innerHTML='<option value="all">كل الفروع</option>';
+        BRANCHES.forEach(function(b){var o=document.createElement('option');o.value=b;o.textContent=b;bsel.appendChild(o);});
+        var allDs=getAllDateStrings();
+        if(allDs.length){
+          document.getElementById('gf-from').min=allDs[0];
+          document.getElementById('gf-from').max=allDs[allDs.length-1];
+          document.getElementById('gf-to').min=allDs[0];
+          document.getElementById('gf-to').max=allDs[allDs.length-1];
+        }
+        document.getElementById('tb-sub').textContent=BRANCHES.length+' فروع · Google Sheets · '+allDs.length+' يوم';
+        document.getElementById('tb-pct').style.display='inline-block';
+        document.getElementById('uscreen').classList.add('hidden');
+        showLdg(false);
+        setMode('daily');
+      }catch(err){alert('خطأ في القراءة:\n'+err.message);showLdg(false);}
+    })
+    .catch(function(err){
+      showLdg(false);
+      alert('❌ '+err.message+'\n\nتأكد إن الملف على Google Sheets إعداده: Share → Anyone with the link → Viewer');
+    });
+}
+
 function handleFile(f){
   if(!f)return;
   showLdg(true,'جاري قراءة الملف...');
