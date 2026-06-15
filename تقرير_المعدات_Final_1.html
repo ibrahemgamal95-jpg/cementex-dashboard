@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقرير تحليل المعدات — Cementex</title>
+
+<!-- Chart.js من CDN موثوق -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<!-- SheetJS للقراءة من Excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- خط عربي -->
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0f1623;--panel:#161f30;--card:#1c2840;--border:#243050;
+  --blue:#2563eb;--blue-light:#3b82f6;--teal:#0ea5e9;
+  --green:#10b981;--orange:#f59e0b;--red:#ef4444;--purple:#8b5cf6;
+  --text:#e2e8f0;--text-muted:#94a3b8;--text-dim:#64748b;
+  --header-h:60px;--nav-w:220px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* ===== LOADING SCREEN ===== */
+#loading-screen{
+  position:fixed;inset:0;background:var(--bg);z-index:9999;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
+}
+#loading-screen.hidden{display:none;}
+.ld-icon{width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,var(--blue),var(--teal));
+  display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 0 40px rgba(37,99,235,.4);}
+.ld-title{font-size:22px;font-weight:800;color:var(--text);}
+.ld-sub{font-size:13px;color:var(--text-muted);}
+.spinner{width:44px;height:44px;border:4px solid var(--border);border-top-color:var(--blue);
+  border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+#ld-msg{font-size:13px;color:var(--text-muted);}
+#ld-err{display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
+  border-radius:10px;padding:16px 24px;max-width:420px;text-align:center;}
+#ld-err p{color:var(--red);font-size:13px;line-height:1.7;}
+#ld-err button{margin-top:12px;background:var(--red);color:#fff;border:none;border-radius:8px;
+  padding:8px 20px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+
+/* ===== TOP BAR ===== */
+.topbar{position:fixed;top:0;right:0;left:0;z-index:100;height:var(--header-h);
+  background:var(--panel);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+.topbar-logo{display:flex;align-items:center;gap:10px;}
+.topbar-logo .icon{width:34px;height:34px;border-radius:8px;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  display:flex;align-items:center;justify-content:center;font-size:18px;}
+.topbar-logo span{font-size:15px;font-weight:700;}
+.topbar-logo small{font-size:11px;color:var(--text-muted);display:block;margin-top:-2px;}
+.topbar-meta{display:flex;align-items:center;gap:10px;}
+.badge-live{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);
+  font-size:11px;padding:3px 10px;border-radius:20px;}
+.btn-top{background:none;border:1px solid var(--border);color:var(--text-muted);
+  padding:5px 12px;border-radius:6px;font-family:'Tajawal',sans-serif;
+  font-size:12px;cursor:pointer;transition:all .2s;}
+.btn-top:hover{border-color:var(--blue);color:var(--blue-light);}
+.btn-refresh{border-color:rgba(16,185,129,.4)!important;color:#10b981!important;}
+.btn-refresh:hover{border-color:var(--green)!important;background:rgba(16,185,129,.08)!important;}
+#last-update{font-size:11px;color:var(--text-dim);}
+
+/* ===== SIDEBAR ===== */
+.sidebar{position:fixed;top:var(--header-h);right:0;bottom:0;width:var(--nav-w);
+  background:var(--panel);border-left:1px solid var(--border);padding:16px 0;z-index:90;overflow-y:auto;}
+.nav-section{padding:8px 16px 4px;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;
+  font-size:13px;color:var(--text-muted);border-right:3px solid transparent;transition:all .2s;}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,.04);}
+.nav-item.active{color:var(--blue-light);background:rgba(37,99,235,.1);border-right-color:var(--blue-light);font-weight:600;}
+.nav-icon{font-size:16px;width:20px;text-align:center;}
+
+/* ===== FILTERS ===== */
+.filters-bar{position:fixed;top:var(--header-h);right:var(--nav-w);left:0;
+  background:var(--panel);border-bottom:1px solid var(--border);
+  padding:10px 20px;display:flex;align-items:center;gap:12px;z-index:80;flex-wrap:wrap;}
+.filter-label{font-size:11px;color:var(--text-dim);white-space:nowrap;}
+.filter-select{background:var(--card);border:1px solid var(--border);color:var(--text);
+  border-radius:6px;padding:5px 10px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;outline:none;}
+.filter-select:focus{border-color:var(--blue);}
+.filter-reset{background:none;border:1px solid var(--border);color:var(--text-muted);
+  padding:5px 12px;border-radius:6px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;margin-right:auto;}
+.filter-reset:hover{border-color:var(--red);color:var(--red);}
+#filter-count{font-size:12px;color:var(--teal);}
+
+/* ===== MAIN ===== */
+.main{margin-right:var(--nav-w);margin-top:calc(var(--header-h) + 52px);padding:20px;}
+.page{display:none;}
+.page.active{display:block;}
+
+/* ===== KPI ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px;}
+.kpi-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:16px 18px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.kpi-card::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;border-radius:0 12px 12px 0;}
+.kpi-card.blue::before{background:var(--blue);}
+.kpi-card.teal::before{background:var(--teal);}
+.kpi-card.green::before{background:var(--green);}
+.kpi-card.orange::before{background:var(--orange);}
+.kpi-card.red::before{background:var(--red);}
+.kpi-card.purple::before{background:var(--purple);}
+.kpi-label{font-size:11px;color:var(--text-muted);margin-bottom:8px;}
+.kpi-value{font-size:28px;font-weight:800;line-height:1;margin-bottom:6px;}
+.kpi-card.blue .kpi-value{color:var(--blue-light);}
+.kpi-card.teal .kpi-value{color:var(--teal);}
+.kpi-card.green .kpi-value{color:var(--green);}
+.kpi-card.orange .kpi-value{color:var(--orange);}
+.kpi-card.red .kpi-value{color:var(--red);}
+.kpi-card.purple .kpi-value{color:var(--purple);}
+.kpi-sub{font-size:11px;color:var(--text-dim);}
+.kpi-icon{position:absolute;bottom:12px;left:14px;font-size:22px;opacity:.12;}
+
+/* ===== CHARTS ===== */
+.charts-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.charts-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
+.chart-card.no-mb{margin-bottom:0;}
+.chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.chart-sub{font-size:11px;color:var(--text-dim);margin-bottom:14px;}
+.chart-wrap{position:relative;}
+
+/* ===== TABLE ===== */
+.data-table{width:100%;border-collapse:collapse;font-size:12px;}
+.data-table th{background:rgba(37,99,235,.1);color:var(--blue-light);padding:10px 12px;
+  text-align:right;font-weight:600;font-size:11px;border-bottom:1px solid var(--border);}
+.data-table td{padding:9px 12px;border-bottom:1px solid rgba(36,48,80,.6);color:var(--text-muted);}
+.data-table tr:hover td{background:rgba(37,99,235,.04);color:var(--text);}
+.table-wrap{overflow-x:auto;max-height:400px;overflow-y:auto;}
+.status-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;}
+.s-op{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.s-maint{background:rgba(245,158,11,.15);color:var(--orange);border:1px solid rgba(245,158,11,.3);}
+.s-broken{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+.s-accident{background:rgba(139,92,246,.15);color:var(--purple);border:1px solid rgba(139,92,246,.3);}
+
+/* ===== MATRIX ===== */
+.matrix-wrap{overflow-x:auto;}
+.matrix-table{width:100%;border-collapse:collapse;font-size:11px;min-width:600px;}
+.matrix-table th{background:rgba(14,165,233,.1);color:var(--teal);padding:8px 10px;
+  text-align:center;font-weight:600;border:1px solid var(--border);}
+.matrix-table th:first-child{text-align:right;}
+.matrix-table td{padding:7px 10px;border:1px solid rgba(36,48,80,.5);text-align:center;color:var(--text-muted);}
+.mv{font-weight:700;border-radius:4px;padding:2px 6px;}
+.mv-high{background:rgba(16,185,129,.15);color:var(--green);}
+.mv-med{background:rgba(245,158,11,.12);color:var(--orange);}
+.mv-low{background:rgba(100,116,139,.1);color:var(--text-dim);}
+.mv-zero{color:var(--text-dim);opacity:.4;}
+
+/* ===== PROGRESS ===== */
+.progress-list{display:flex;flex-direction:column;gap:10px;}
+.progress-header{display:flex;justify-content:space-between;margin-bottom:5px;}
+.progress-name{font-size:12px;color:var(--text);}
+.progress-count{font-size:12px;font-weight:700;color:var(--blue-light);}
+.progress-track{background:rgba(36,48,80,.8);border-radius:4px;height:7px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+
+/* ===== PAGE HEADER ===== */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.page-title{font-size:18px;font-weight:800;color:var(--text);}
+.page-title span{color:var(--blue-light);}
+.page-desc{font-size:12px;color:var(--text-dim);margin-top:2px;}
+.page-badge{font-size:11px;padding:4px 12px;border-radius:20px;
+  background:rgba(37,99,235,.15);color:var(--blue-light);border:1px solid rgba(37,99,235,.3);}
+
+/* ===== MISC ===== */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+  <div class="ld-icon">📊</div>
+  <div class="ld-title">تقرير تحليل المعدات</div>
+  <div class="ld-sub">Cementex Equipment Dashboard</div>
+  <div class="spinner"></div>
+  <div id="ld-msg">جاري التحميل من Google Sheets...</div>
+  <div id="ld-err">
+    <p id="ld-err-msg">حدث خطأ</p>
+    <button onclick="retryLoad()">🔄 إعادة المحاولة</button>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="icon">📊</div>
+    <div>
+      <span>تحليل المعدات</span>
+      <small>Equipment Fleet Analytics</small>
+    </div>
+  </div>
+  <div class="topbar-meta">
+    <span class="badge-live">● مباشر</span>
+    <span id="last-update"></span>
+    <button class="btn-top btn-refresh" onclick="loadData()">🔄 تحديث البيانات</button>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="nav-section">الصفحات</div>
+  <div class="nav-item active" onclick="showPage('p1',this)"><span class="nav-icon">🏠</span> النظرة العامة</div>
+  <div class="nav-item" onclick="showPage('p2',this)"><span class="nav-icon">🏢</span> تحليل الفروع</div>
+  <div class="nav-item" onclick="showPage('p3',this)"><span class="nav-icon">🔧</span> أنواع المعدات</div>
+  <div class="nav-item" onclick="showPage('p4',this)"><span class="nav-icon">🚛</span> الطرازات</div>
+  <div class="nav-item" onclick="showPage('p5',this)"><span class="nav-icon">📅</span> سنوات الصنع</div>
+  <div class="nav-section" style="margin-top:8px">تقارير</div>
+  <div class="nav-item" onclick="showPage('p6',this)"><span class="nav-icon">📦</span> تقرير الحجم</div>
+  <div class="nav-item" onclick="showPage('p7',this)"><span class="nav-icon">📋</span> جدول تفصيلي</div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <span class="filter-label">الفلاتر:</span>
+  <select class="filter-select" id="f-branch" onchange="applyFilters()"><option value="">كل الفروع</option></select>
+  <select class="filter-select" id="f-type" onchange="applyFilters()"><option value="">كل الأنواع</option></select>
+  <select class="filter-select" id="f-status" onchange="applyFilters()">
+    <option value="">كل الحالات</option>
+    <option>تعمل</option><option>صيانة</option><option>لا تعمل</option><option>حادث</option>
+  </select>
+  <button class="filter-reset" onclick="resetFilters()">↺ إعادة تعيين</button>
+  <span id="filter-count"></span>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- P1: OVERVIEW -->
+<div class="page active" id="p1">
+  <div class="page-header">
+    <div><div class="page-title">🏠 النظرة <span>العامة</span></div><div class="page-desc">ملخص شامل لأسطول المعدات</div></div>
+    <span class="page-badge" id="p1-badge">—</span>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card blue"><div class="kpi-label">إجمالي المعدات</div><div class="kpi-value" id="kv-total">—</div><div class="kpi-sub" id="ks-total">—</div><div class="kpi-icon">⚙️</div></div>
+    <div class="kpi-card green"><div class="kpi-label">تعمل</div><div class="kpi-value" id="kv-op">—</div><div class="kpi-sub" id="ks-op">—</div><div class="kpi-icon">✅</div></div>
+    <div class="kpi-card orange"><div class="kpi-label">صيانة</div><div class="kpi-value" id="kv-maint">—</div><div class="kpi-sub" id="ks-maint">—</div><div class="kpi-icon">🔨</div></div>
+    <div class="kpi-card red"><div class="kpi-label">حوادث / لا تعمل</div><div class="kpi-value" id="kv-broken">—</div><div class="kpi-sub" id="ks-broken">—</div><div class="kpi-icon">⚠️</div></div>
+    <div class="kpi-card teal"><div class="kpi-label">متوسط عمر الأسطول</div><div class="kpi-value" id="kv-age">—</div><div class="kpi-sub">سنة</div><div class="kpi-icon">📅</div></div>
+  </div>
+  <div class="charts-grid-2">
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>توزيع المعدات حسب الفروع</div><div class="chart-sub">عدد المعدات في كل فرع</div><div class="chart-wrap" style="height:220px"><canvas id="ch-branches"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>توزيع أنواع المعدات</div><div class="chart-sub">النسبة من إجمالي الأسطول</div><div class="chart-wrap" style="height:220px"><canvas id="ch-types-donut"></canvas></div></div>
+  </div>
+  <div style="height:16px"></div>
+  <div class="charts-grid-2">
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>حالة الأسطول</div><div class="chart-sub">تعمل / صيانة / حادث</div><div class="chart-wrap" style="height:200px"><canvas id="ch-status-donut"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>فئات أعمار الأسطول</div><div class="chart-sub">تصنيف المعدات حسب عمرها</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-cats"></canvas></div></div>
+  </div>
+</div>
+
+<!-- P2: BRANCHES -->
+<div class="page" id="p2">
+  <div class="page-header">
+    <div><div class="page-title">🏢 تحليل <span>الفروع</span></div><div class="page-desc">مقارنة مفصّلة للمعدات داخل كل فرع</div></div>
+  </div>
+  <div class="charts-grid-2">
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>المعدات لكل فرع</div><div class="chart-sub">مقارنة أعداد المعدات</div><div class="chart-wrap" style="height:230px"><canvas id="ch-branch-bar"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>حالة المعدات لكل فرع</div><div class="chart-sub">تعمل / صيانة / حادث</div><div class="chart-wrap" style="height:230px"><canvas id="ch-branch-status"></canvas></div></div>
+  </div>
+  <div style="height:16px"></div>
+  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>توزيع أنواع المعدات حسب الفروع</div><div class="chart-sub">Stacked Bar</div><div class="chart-wrap" style="height:250px"><canvas id="ch-branch-stacked"></canvas></div></div>
+  <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--purple)"></span>مصفوفة الفرع × نوع المعدة</div><div class="chart-sub">عدد كل نوع في كل فرع</div><div class="matrix-wrap"><table class="matrix-table" id="matrix-table"></table></div></div>
+</div>
+
+<!-- P3: TYPES -->
+<div class="page" id="p3">
+  <div class="page-header">
+    <div><div class="page-title">🔧 تحليل أنواع <span>المعدات</span></div><div class="page-desc">توزيع كل نوع معدة عبر الفروع</div></div>
+  </div>
+  <div class="charts-grid-3">
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>أكثر الأنواع</div><div class="chart-sub">ترتيب تنازلي</div><div class="progress-list" id="type-progress" style="margin-top:6px"></div></div>
+    <div class="chart-card no-mb" style="grid-column:span 2"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>توزيع كل نوع على الفروع</div><div class="chart-sub">Grouped Bar</div><div class="chart-wrap" style="height:240px"><canvas id="ch-type-branch"></canvas></div></div>
+  </div>
+  <div style="height:16px"></div>
+  <div class="charts-grid-2">
+    <div class="chart-card no-mb"><div class="chart-title" id="type1-title"><span class="dot" style="background:var(--orange)"></span>—</div><div class="chart-wrap" style="height:220px"><canvas id="ch-type1-dist"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title" id="type2-title"><span class="dot" style="background:var(--green)"></span>—</div><div class="chart-wrap" style="height:220px"><canvas id="ch-type2-dist"></canvas></div></div>
+  </div>
+</div>
+
+<!-- P4: MODELS -->
+<div class="page" id="p4">
+  <div class="page-header">
+    <div><div class="page-title">🚛 تحليل <span>الطرازات</span></div><div class="page-desc">الشركات المصنّعة وتوزيع الطرازات</div></div>
+  </div>
+  <div class="charts-grid-2">
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>أكثر الطرازات تكراراً</div><div class="chart-sub">Top 8 طرازات</div><div class="chart-wrap" style="height:250px"><canvas id="ch-models-bar"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>حصة كل طراز</div><div class="chart-sub">نسبة من الإجمالي</div><div class="chart-wrap" style="height:250px"><canvas id="ch-models-pie"></canvas></div></div>
+  </div>
+  <div style="height:16px"></div>
+  <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>أبرز إحصائيات الطرازات</div><div class="chart-sub">أعلى 4 طرازات</div><div id="model-highlights" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:12px"></div></div>
+</div>
+
+<!-- P5: YEARS -->
+<div class="page" id="p5">
+  <div class="page-header">
+    <div><div class="page-title">📅 تحليل <span>سنوات الصنع</span></div><div class="page-desc">عمر الأسطول والمعدات القديمة</div></div>
+  </div>
+  <div class="kpi-grid-4">
+    <div class="kpi-card red"><div class="kpi-label">أقدم معدة</div><div class="kpi-value" id="kv-oldest">—</div><div class="kpi-sub" id="ks-oldest">—</div><div class="kpi-icon">🏚️</div></div>
+    <div class="kpi-card green"><div class="kpi-label">أحدث معدة</div><div class="kpi-value" id="kv-newest">—</div><div class="kpi-sub" id="ks-newest">—</div><div class="kpi-icon">✨</div></div>
+    <div class="kpi-card teal"><div class="kpi-label">متوسط العمر</div><div class="kpi-value" id="kv-avg-age">—</div><div class="kpi-sub">سنة</div><div class="kpi-icon">⏱️</div></div>
+    <div class="kpi-card orange"><div class="kpi-label">معدات قديمة جداً</div><div class="kpi-value" id="kv-old">—</div><div class="kpi-sub" id="ks-old">أكثر من 15 سنة</div><div class="kpi-icon">⚠️</div></div>
+  </div>
+  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>المعدات حسب سنة الصنع</div><div class="chart-sub">عدد المعدات المضافة كل سنة</div><div class="chart-wrap" style="height:220px"><canvas id="ch-years-line"></canvas></div></div>
+  <div class="charts-grid-2">
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>فئات الأعمار</div><div class="chart-sub">تصنيف المعدات حسب عمرها</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-bar"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>نسب فئات الأعمار</div><div class="chart-sub">توزيع دائري</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-pie"></canvas></div></div>
+  </div>
+</div>
+
+<!-- P6: VOLUME REPORT -->
+<div class="page" id="p6">
+  <div class="page-header">
+    <div><div class="page-title">📦 تقرير <span>الحجم</span></div><div class="page-desc">إجمالي حجم المعدات (m³) موزعاً على الفروع</div></div>
+    <span class="page-badge" id="p6-badge">—</span>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card blue"><div class="kpi-label">إجمالي الحجم الكلي</div><div class="kpi-value" id="kv-vol-total">—</div><div class="kpi-sub">m³ إجمالي الأسطول</div><div class="kpi-icon">📦</div></div>
+    <div class="kpi-card green"><div class="kpi-label">أكبر فرع حجماً</div><div class="kpi-value" id="kv-vol-max">—</div><div class="kpi-sub" id="ks-vol-max">—</div><div class="kpi-icon">🏆</div></div>
+    <div class="kpi-card teal"><div class="kpi-label">متوسط الحجم / فرع</div><div class="kpi-value" id="kv-vol-avg">—</div><div class="kpi-sub">m³</div><div class="kpi-icon">📊</div></div>
+    <div class="kpi-card orange"><div class="kpi-label">أكثر حجم تكراراً</div><div class="kpi-value" id="kv-vol-common">—</div><div class="kpi-sub" id="ks-vol-common">—</div><div class="kpi-icon">🔢</div></div>
+    <div class="kpi-card red"><div class="kpi-label">بلا حجم محدد</div><div class="kpi-value" id="kv-vol-missing">—</div><div class="kpi-sub" id="ks-vol-missing">—</div><div class="kpi-icon">❓</div></div>
+  </div>
+  <div class="charts-grid-2">
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>إجمالي الحجم (m³) لكل فرع</div><div class="chart-sub">مجموع حجم المعدات في كل فرع</div><div class="chart-wrap" style="height:240px"><canvas id="ch-vol-bar"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>نسبة الحجم لكل فرع</div><div class="chart-sub">حصة كل فرع من إجمالي الحجم</div><div class="chart-wrap" style="height:240px"><canvas id="ch-vol-pie"></canvas></div></div>
+  </div>
+  <div style="height:16px"></div>
+  <div class="charts-grid-2">
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>توزيع الأحجام (m³)</div><div class="chart-sub">عدد المعدات حسب كل حجم</div><div class="chart-wrap" style="height:210px"><canvas id="ch-vol-sizes"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>متوسط الحجم لكل فرع</div><div class="chart-sub">المتوسط الحسابي لحجم المعدات</div><div class="chart-wrap" style="height:210px"><canvas id="ch-vol-avg-branch"></canvas></div></div>
+  </div>
+  <div style="height:16px"></div>
+  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--purple)"></span>توزيع الأحجام حسب الفروع</div><div class="chart-sub">Stacked — عدد معدات كل حجم في كل فرع</div><div class="chart-wrap" style="height:260px"><canvas id="ch-vol-stacked"></canvas></div></div>
+  <div class="chart-card no-mb">
+    <div class="chart-title"><span class="dot" style="background:var(--blue-light)"></span>جدول ملخص الحجم لكل فرع</div>
+    <div class="chart-sub">إجمالي وتفاصيل الأحجام لكل فرع</div>
+    <div class="matrix-wrap">
+      <table class="matrix-table" id="vol-table">
+        <thead><tr>
+          <th>الفرع</th><th>عدد المعدات</th><th>إجمالي الحجم (m³)</th>
+          <th>النسبة</th><th>متوسط الحجم</th><th>أصغر</th><th>أكبر</th>
+        </tr></thead>
+        <tbody id="vol-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- P7: DETAIL TABLE -->
+<div class="page" id="p7">
+  <div class="page-header">
+    <div><div class="page-title">📋 الجدول <span>التفصيلي</span></div><div class="page-desc">كل سجلات المعدات</div></div>
+    <span class="page-badge" id="table-badge">—</span>
+  </div>
+  <div class="chart-card no-mb">
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr>
+          <th>#</th><th>الفرع</th><th>نوع المعدة</th><th>رقم اللوحة</th>
+          <th>الطراز</th><th>سنة الصنع</th><th>الحجم</th><th>الحالة</th><th>فئة العمر</th>
+        </tr></thead>
+        <tbody id="detail-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ===== CONSTANTS =====
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLlP7IeYwORjrXpx8LPGAAPHz5MbHkj-Rt_rQtVt9_13y-mwaVKdOJW4M0Mp4NgQ4/exec';
+const CURRENT_YEAR = 2026;
+const BRANCH_COLORS = ['#2563eb','#0ea5e9','#10b981','#f59e0b','#8b5cf6','#ec4899','#f97316','#06b6d4'];
+const TYPE_COLORS   = ['#2563eb','#0ea5e9','#10b981','#f59e0b','#8b5cf6','#ec4899','#f97316','#06b6d4','#84cc16','#a78bfa'];
+const STATUS_COLORS = {'تعمل':'#10b981','صيانة':'#f59e0b','حادث':'#8b5cf6','لا تعمل':'#ef4444'};
+
+let DATA = [], filtered = [], charts = {};
+let COL = {branch:'الفرع',type:'المعدة',plate:'رقم اللوحة',model:'الطراز',year:'الموديل',size:'الحجم',status:'الحالة'};
+
+// ===== LOAD DATA =====
+function loadData() {
+  showLoading(true, 'جاري التحميل من Google Sheets...');
+  const url = APPS_SCRIPT_URL + '?nocache=' + Date.now();
+  fetch(url)
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(json => {
+      if (!json || !json.length) throw new Error('البيانات فارغة');
+      showLoading(true, 'جاري تحليل البيانات...');
+      const headers = Object.keys(json[0]);
+      detectColumns(headers);
+      DATA = parseRows(json);
+      filtered = [...DATA];
+      populateFilters();
+      renderAll();
+      const now = new Date();
+      document.getElementById('last-update').textContent =
+        'آخر تحديث: ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+      showLoading(false);
+    })
+    .catch(err => {
+      showErr('❌ فشل التحميل: ' + err.message +
+        '\n\nتأكد من إعدادات Apps Script:\nDeploy → Who has access → Anyone');
+    });
+}
+
+function retryLoad() {
+  document.getElementById('ld-err').style.display = 'none';
+  loadData();
+}
+
+function showLoading(v, msg) {
+  const s = document.getElementById('loading-screen');
+  s.classList.toggle('hidden', !v);
+  if (msg) document.getElementById('ld-msg').textContent = msg;
+}
+
+function showErr(msg) {
+  document.getElementById('ld-msg').style.display = 'none';
+  document.querySelector('.spinner').style.display = 'none';
+  const e = document.getElementById('ld-err');
+  e.style.display = 'block';
+  document.getElementById('ld-err-msg').innerHTML = msg.replace(/\n/g,'<br>');
+}
+
+// ===== COLUMN DETECT =====
+function detectColumns(headers) {
+  const h = headers.map(x => String(x||'').trim());
+  const find = kws => { for(const k of kws){ const i=h.findIndex(c=>c.includes(k)); if(i>=0)return h[i]; } return null; };
+  COL.branch = find(['فرع','branch','Branch']) || h[0];
+  COL.type   = find(['معدة','نوع','type','Type']) || h[1];
+  COL.plate  = find(['لوحة','plate','Plate']) || h[2];
+  COL.model  = find(['طراز','model','Model','ماركة']) || h[3];
+  COL.year   = find(['موديل','سنة','year','Year']) || h[5];
+  COL.size   = find(['حجم','size','Size']) || h[6];
+  COL.status = find(['حالة','status','Status']) || h[7];
+}
+
+function cleanStatus(s) {
+  if(!s) return 'تعمل';
+  s = String(s).trim();
+  if(/تعمل|يعمل|working|active/i.test(s)) return 'تعمل';
+  if(/صيانة|maintenance|repair/i.test(s)) return 'صيانة';
+  if(/حادث|accident/i.test(s)) return 'حادث';
+  return 'لا تعمل';
+}
+function cleanYear(v) { const n=parseInt(v); return(!isNaN(n)&&n>=1980&&n<=CURRENT_YEAR)?n:null; }
+function ageCat(y) {
+  if(!y) return 'غير محدد';
+  const a = CURRENT_YEAR - y;
+  return a<=5?'جديدة (0-5)':a<=10?'متوسطة (6-10)':a<=15?'قديمة (11-15)':'قديمة جداً (+15)';
+}
+function parseRows(json) {
+  return json.map(r => ({
+    branch: String(r[COL.branch]||'').trim()||'غير محدد',
+    type:   String(r[COL.type]||'').trim()||'غير محدد',
+    plate:  String(r[COL.plate]||'').trim()||'—',
+    model:  String(r[COL.model]||'').trim()||'—',
+    year:   cleanYear(r[COL.year]),
+    size:   r[COL.size]||null,
+    sizeNum:parseFloat(String(r[COL.size]||'').replace(/[^\d.]/g,''))||null,
+    status: cleanStatus(r[COL.status]),
+    ageCat: ageCat(cleanYear(r[COL.year])),
+    age:    cleanYear(r[COL.year]) ? CURRENT_YEAR-cleanYear(r[COL.year]) : null
+  })).filter(r => r.branch!=='غير محدد' || r.type!=='غير محدد');
+}
+
+// ===== FILTERS =====
+function populateFilters() {
+  const branches = [...new Set(DATA.map(d=>d.branch))].sort();
+  const types    = [...new Set(DATA.map(d=>d.type))].sort();
+  document.getElementById('f-branch').innerHTML = '<option value="">كل الفروع</option>' + branches.map(b=>`<option>${b}</option>`).join('');
+  document.getElementById('f-type').innerHTML   = '<option value="">كل الأنواع</option>'  + types.map(t=>`<option>${t}</option>`).join('');
+}
+function applyFilters() {
+  const fb=document.getElementById('f-branch').value;
+  const ft=document.getElementById('f-type').value;
+  const fs=document.getElementById('f-status').value;
+  filtered = DATA.filter(d=>(!fb||d.branch===fb)&&(!ft||d.type===ft)&&(!fs||d.status===fs));
+  document.getElementById('filter-count').textContent = (fb||ft||fs)?`← ${filtered.length} معدة`:'';
+  renderAll();
+}
+function resetFilters() {
+  ['f-branch','f-type','f-status'].forEach(id=>document.getElementById(id).value='');
+  filtered=[...DATA]; document.getElementById('filter-count').textContent=''; renderAll();
+}
+
+// ===== CHART HELPERS =====
+const baseOpts = {
+  responsive:true, maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{rtl:true,titleFont:{family:'Tajawal'},bodyFont:{family:'Tajawal'}}},
+  scales:{
+    x:{ticks:{color:'#94a3b8',font:{family:'Tajawal',size:10}},grid:{color:'rgba(36,48,80,.5)'}},
+    y:{ticks:{color:'#94a3b8',font:{family:'Tajawal',size:10}},grid:{color:'rgba(36,48,80,.5)'}}
+  }
+};
+function mc(id, config) {
+  const ctx = document.getElementById(id); if(!ctx) return;
+  if(charts[id]) charts[id].destroy();
+  charts[id] = new Chart(ctx, config);
+}
+function countBy(arr,key){const r={};arr.forEach(d=>{const v=d[key]||'غير محدد';r[v]=(r[v]||0)+1;});return r;}
+function sortedEntries(obj){return Object.entries(obj).sort((a,b)=>b[1]-a[1]);}
+
+// ===== RENDER ALL =====
+function renderAll(){renderP1();renderP2();renderP3();renderP4();renderP5();renderP6();renderP7();}
+
+// ===== P1: OVERVIEW =====
+function renderP1(){
+  const total=filtered.length, op=filtered.filter(d=>d.status==='تعمل').length;
+  const maint=filtered.filter(d=>d.status==='صيانة').length;
+  const broken=filtered.filter(d=>d.status==='حادث'||d.status==='لا تعمل').length;
+  const ages=filtered.filter(d=>d.age).map(d=>d.age);
+  const avgAge=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'—';
+  const branches=[...new Set(filtered.map(d=>d.branch))];
+  document.getElementById('kv-total').textContent=total;
+  document.getElementById('ks-total').textContent=`عبر ${branches.length} فروع`;
+  document.getElementById('kv-op').textContent=op;
+  document.getElementById('ks-op').textContent=total?(op/total*100).toFixed(1)+'% من الأسطول':'';
+  document.getElementById('kv-maint').textContent=maint;
+  document.getElementById('ks-maint').textContent=total?(maint/total*100).toFixed(1)+'% من الأسطول':'';
+  document.getElementById('kv-broken').textContent=broken;
+  document.getElementById('ks-broken').textContent=total?(broken/total*100).toFixed(1)+'% من الأسطول':'';
+  document.getElementById('kv-age').textContent=avgAge;
+  document.getElementById('p1-badge').textContent=total+' معدة';
+  const bC=countBy(filtered,'branch');
+  const bL=Object.keys(bC).sort((a,b)=>bC[b]-bC[a]);
+  mc('ch-branches',{type:'bar',data:{labels:bL,datasets:[{data:bL.map(k=>bC[k]),backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts}});
+  const tC=countBy(filtered,'type'),tL=sortedEntries(tC).map(([k])=>k);
+  mc('ch-types-donut',{type:'doughnut',data:{labels:tL,datasets:[{data:tL.map(k=>tC[k]),backgroundColor:TYPE_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'65%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
+  const sC=countBy(filtered,'status'),sL=Object.keys(sC);
+  mc('ch-status-donut',{type:'doughnut',data:{labels:sL,datasets:[{data:sL.map(k=>sC[k]),backgroundColor:sL.map(k=>STATUS_COLORS[k]||'#64748b'),borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'60%',plugins:{...baseOpts.plugins,legend:{display:true,position:'bottom',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
+  const acL=['جديدة (0-5)','متوسطة (6-10)','قديمة (11-15)','قديمة جداً (+15)'];
+  const acC=['#10b981','#0ea5e9','#f59e0b','#ef4444'];
+  const acCounts=countBy(filtered,'ageCat');
+  mc('ch-age-cats',{type:'bar',data:{labels:acL,datasets:[{data:acL.map(l=>acCounts[l]||0),backgroundColor:acC,borderRadius:6}]},options:{...baseOpts}});
+}
+
+// ===== P2: BRANCHES =====
+function renderP2(){
+  const branches=[...new Set(filtered.map(d=>d.branch))].sort();
+  const bCounts=branches.map(b=>filtered.filter(d=>d.branch===b).length);
+  mc('ch-branch-bar',{type:'bar',data:{labels:branches,datasets:[{data:bCounts,backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts,indexAxis:'y',scales:{x:baseOpts.scales.x,y:{ticks:{color:'#94a3b8',font:{family:'Tajawal',size:11}},grid:{color:'rgba(36,48,80,.5)'}}}}});
+  const statuses=['تعمل','صيانة','حادث','لا تعمل'],sClrs=['#10b981','#f59e0b','#8b5cf6','#ef4444'];
+  mc('ch-branch-status',{type:'bar',data:{labels:branches,datasets:statuses.map((s,i)=>({label:s,backgroundColor:sClrs[i],data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.status===s).length),borderRadius:4}))},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
+  const types=[...new Set(filtered.map(d=>d.type))].sort();
+  mc('ch-branch-stacked',{type:'bar',data:{labels:branches,datasets:types.map((t,i)=>({label:t,backgroundColor:TYPE_COLORS[i%TYPE_COLORS.length],data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t).length),borderRadius:2}))},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}},scales:{x:{...baseOpts.scales.x,stacked:true},y:{...baseOpts.scales.y,stacked:true}}}});
+  const tbl=document.getElementById('matrix-table');
+  let html='<thead><tr><th>الفرع</th>';
+  types.forEach(t=>html+=`<th>${t}</th>`);
+  html+='<th>الإجمالي</th></tr></thead><tbody>';
+  branches.forEach(b=>{
+    const tot=filtered.filter(d=>d.branch===b).length;
+    html+=`<tr><td style="text-align:right;font-weight:600;color:var(--text)">${b}</td>`;
+    types.forEach(t=>{
+      const v=filtered.filter(d=>d.branch===b&&d.type===t).length;
+      const cls=v>=20?'mv-high':v>=5?'mv-med':v>0?'mv-low':'mv-zero';
+      html+=`<td><span class="mv ${cls}">${v||'—'}</span></td>`;
+    });
+    html+=`<td><span class="mv mv-high">${tot}</span></td></tr>`;
+  });
+  tbl.innerHTML=html+'</tbody>';
+}
+
+// ===== P3: TYPES =====
+function renderP3(){
+  const tC=countBy(filtered,'type'),tS=sortedEntries(tC),maxT=tS[0]?.[1]||1;
+  document.getElementById('type-progress').innerHTML=tS.map(([t,v],i)=>`
+    <div><div class="progress-header"><span class="progress-name">${t}</span><span class="progress-count">${v}</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:${(v/maxT*100).toFixed(0)}%;background:${TYPE_COLORS[i%TYPE_COLORS.length]}"></div></div></div>`).join('');
+  const branches=[...new Set(filtered.map(d=>d.branch))].sort();
+  const top6=tS.slice(0,6).map(([t])=>t);
+  mc('ch-type-branch',{type:'bar',data:{labels:branches,datasets:top6.map((t,i)=>({label:t,backgroundColor:TYPE_COLORS[i],data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t).length),borderRadius:4}))},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
+  const t1=tS[0]?.[0]||'خلاطة',t2=tS[1]?.[0]||'مضخة';
+  document.getElementById('type1-title').innerHTML=`<span class="dot" style="background:var(--orange)"></span>${t1} — توزيع على الفروع`;
+  document.getElementById('type2-title').innerHTML=`<span class="dot" style="background:var(--green)"></span>${t2} — توزيع على الفروع`;
+  mc('ch-type1-dist',{type:'doughnut',data:{labels:branches,datasets:[{data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t1).length),backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'55%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:8}}}}});
+  mc('ch-type2-dist',{type:'doughnut',data:{labels:branches,datasets:[{data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t2).length),backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'55%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:8}}}}});
+}
+
+// ===== P4: MODELS =====
+function renderP4(){
+  const mC=countBy(filtered,'model');
+  delete mC['—'];delete mC['غير محدد'];
+  const mS=sortedEntries(mC).slice(0,8);
+  mc('ch-models-bar',{type:'bar',data:{labels:mS.map(([k])=>k),datasets:[{data:mS.map(([,v])=>v),backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts}});
+  mc('ch-models-pie',{type:'pie',data:{labels:mS.map(([k])=>k),datasets:[{data:mS.map(([,v])=>v),backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
+  const hlC=['var(--blue-light)','var(--green)','var(--orange)','var(--purple)'];
+  const hlBg=['rgba(37,99,235,.08)','rgba(16,185,129,.08)','rgba(245,158,11,.08)','rgba(139,92,246,.08)'];
+  const hlBr=['rgba(37,99,235,.2)','rgba(16,185,129,.2)','rgba(245,158,11,.2)','rgba(139,92,246,.2)'];
+  const total=filtered.length||1;
+  document.getElementById('model-highlights').innerHTML=mS.slice(0,4).map(([k,v],i)=>`
+    <div style="background:${hlBg[i]};border:1px solid ${hlBr[i]};border-radius:10px;padding:14px;text-align:center">
+      <div style="font-size:20px;font-weight:800;color:${hlC[i]}">${k}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px">${['الأكثر','الثاني','الثالث','الرابع'][i]}</div>
+      <div style="font-size:22px;font-weight:700;color:var(--text);margin-top:6px">${v}</div>
+      <div style="font-size:10px;color:var(--text-dim)">${(v/total*100).toFixed(1)}% من الأسطول</div>
+    </div>`).join('');
+}
+
+// ===== P5: YEARS =====
+function renderP5(){
+  const yMap={};
+  filtered.forEach(d=>{if(d.year)yMap[d.year]=(yMap[d.year]||0)+1;});
+  const years=Object.keys(yMap).map(Number).sort((a,b)=>a-b);
+  document.getElementById('kv-oldest').textContent=years[0]||'—';
+  document.getElementById('ks-oldest').textContent=years[0]?`عمر ${CURRENT_YEAR-years[0]} سنة`:'';
+  document.getElementById('kv-newest').textContent=years[years.length-1]||'—';
+  document.getElementById('ks-newest').textContent=years[years.length-1]?`عمر ${CURRENT_YEAR-years[years.length-1]} سنة`:'';
+  const ages=filtered.filter(d=>d.age).map(d=>d.age);
+  document.getElementById('kv-avg-age').textContent=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'—';
+  const oldCount=filtered.filter(d=>d.age&&d.age>15).length;
+  document.getElementById('kv-old').textContent=oldCount;
+  document.getElementById('ks-old').textContent=filtered.length?`${(oldCount/filtered.length*100).toFixed(1)}% من الأسطول`:'';
+  mc('ch-years-line',{type:'bar',data:{labels:years,datasets:[{data:years.map(y=>yMap[y]),backgroundColor:years.map(y=>y>=CURRENT_YEAR-5?'#10b981':y>=CURRENT_YEAR-15?'#0ea5e9':'#ef4444'),borderRadius:4}]},options:{...baseOpts}});
+  const acL=['جديدة (0-5)','متوسطة (6-10)','قديمة (11-15)','قديمة جداً (+15)'];
+  const acC=['#10b981','#0ea5e9','#f59e0b','#ef4444'];
+  const acCounts=countBy(filtered,'ageCat');
+  mc('ch-age-bar',{type:'bar',data:{labels:acL,datasets:[{data:acL.map(l=>acCounts[l]||0),backgroundColor:acC,borderRadius:6}]},options:{...baseOpts}});
+  mc('ch-age-pie',{type:'doughnut',data:{labels:acL,datasets:[{data:acL.map(l=>acCounts[l]||0),backgroundColor:acC,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'55%',plugins:{...baseOpts.plugins,legend:{display:true,position:'bottom',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:8}}}}});
+}
+
+// ===== P6: VOLUME =====
+function renderP6(){
+  const branches=[...new Set(filtered.map(d=>d.branch))].sort();
+  const hasSz=filtered.filter(d=>d.sizeNum);
+  const totalVol=hasSz.reduce((s,d)=>s+d.sizeNum,0);
+  const branchVol={};
+  branches.forEach(b=>{branchVol[b]=filtered.filter(d=>d.branch===b&&d.sizeNum).reduce((s,d)=>s+d.sizeNum,0);});
+  const maxB=branches.reduce((a,b)=>branchVol[a]>=branchVol[b]?a:b,branches[0]||'');
+  const activeBranches=branches.filter(b=>branchVol[b]>0);
+  const sizeMap={};
+  hasSz.forEach(d=>{sizeMap[d.sizeNum]=(sizeMap[d.sizeNum]||0)+1;});
+  const commonSz=Object.entries(sizeMap).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('kv-vol-total').textContent=totalVol||'—';
+  document.getElementById('p6-badge').textContent=hasSz.length+' معدة بحجم محدد';
+  document.getElementById('kv-vol-max').textContent=maxB||'—';
+  document.getElementById('ks-vol-max').textContent=maxB?(branchVol[maxB])+' m³':'';
+  document.getElementById('kv-vol-avg').textContent=activeBranches.length?(totalVol/activeBranches.length).toFixed(0):'—';
+  document.getElementById('kv-vol-common').textContent=commonSz?commonSz[0]+' m³':'—';
+  document.getElementById('ks-vol-common').textContent=commonSz?commonSz[1]+' معدة':'';
+  const missing=filtered.filter(d=>!d.sizeNum).length;
+  document.getElementById('kv-vol-missing').textContent=missing;
+  document.getElementById('ks-vol-missing').textContent=filtered.length?(missing/filtered.length*100).toFixed(1)+'% من الأسطول':'';
+  const bVals=branches.map(b=>branchVol[b]);
+  mc('ch-vol-bar',{type:'bar',data:{labels:branches,datasets:[{data:bVals,backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:c=>` ${c.parsed.y} m³`}}}}});
+  mc('ch-vol-pie',{type:'doughnut',data:{labels:branches,datasets:[{data:bVals,backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'55%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:8}},tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed} m³`}}}}});
+  const sizeKeys=Object.keys(sizeMap).map(Number).sort((a,b)=>a-b);
+  mc('ch-vol-sizes',{type:'bar',data:{labels:sizeKeys.map(s=>s+' m³'),datasets:[{data:sizeKeys.map(s=>sizeMap[s]),backgroundColor:TYPE_COLORS,borderRadius:6}]},options:{...baseOpts}});
+  const branchAvg=branches.map(b=>{const d=filtered.filter(x=>x.branch===b&&x.sizeNum);return d.length?(d.reduce((s,x)=>s+x.sizeNum,0)/d.length).toFixed(1):0;});
+  mc('ch-vol-avg-branch',{type:'bar',data:{labels:branches,datasets:[{data:branchAvg,backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:c=>` ${c.parsed.y} m³ متوسط`}}}}});
+  mc('ch-vol-stacked',{type:'bar',data:{labels:branches,datasets:sizeKeys.map((s,i)=>({label:s+' m³',backgroundColor:TYPE_COLORS[i%TYPE_COLORS.length],data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.sizeNum===s).length),borderRadius:2}))},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}},scales:{x:{...baseOpts.scales.x,stacked:true},y:{...baseOpts.scales.y,stacked:true}}}});
+  document.getElementById('vol-tbody').innerHTML=branches.map(b=>{
+    const bd=filtered.filter(d=>d.branch===b&&d.sizeNum);
+    const tot=bd.reduce((s,d)=>s+d.sizeNum,0);
+    const avg=bd.length?(tot/bd.length).toFixed(1):'—';
+    const min=bd.length?Math.min(...bd.map(d=>d.sizeNum)):'—';
+    const max=bd.length?Math.max(...bd.map(d=>d.sizeNum)):'—';
+    const count=filtered.filter(d=>d.branch===b).length;
+    const pct=totalVol?Math.round(tot/totalVol*100):0;
+    return `<tr>
+      <td style="text-align:right;font-weight:600;color:var(--text)">${b}</td>
+      <td><span class="mv mv-med">${count}</span></td>
+      <td><span class="mv mv-high">${tot} m³</span></td>
+      <td><span style="font-size:11px;color:var(--text-dim)">${pct}%</span></td>
+      <td><span class="mv mv-low">${avg} m³</span></td>
+      <td style="color:var(--text-muted)">${min}${min!=='—'?' m³':''}</td>
+      <td style="color:var(--teal);font-weight:700">${max}${max!=='—'?' m³':''}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== P7: TABLE =====
+function renderP7(){
+  const sc={'تعمل':'s-op','صيانة':'s-maint','لا تعمل':'s-broken','حادث':'s-accident'};
+  document.getElementById('detail-tbody').innerHTML=filtered.map((d,i)=>`
+    <tr>
+      <td style="color:var(--text-dim)">${i+1}</td>
+      <td style="font-weight:600;color:var(--text)">${d.branch}</td>
+      <td>${d.type}</td>
+      <td style="direction:ltr;text-align:left;font-size:11px">${d.plate}</td>
+      <td>${d.model}</td>
+      <td>${d.year||'—'}</td>
+      <td>${d.size||'—'}</td>
+      <td><span class="status-badge ${sc[d.status]||'s-broken'}">${d.status}</span></td>
+      <td style="font-size:10px;color:var(--text-dim)">${d.ageCat}</td>
+    </tr>`).join('');
+  document.getElementById('table-badge').textContent=filtered.length+' سجل';
+}
+
+// ===== NAVIGATION =====
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  setTimeout(renderAll, 50);
+}
+
+// ===== START =====
+window.addEventListener('load', loadData);
+</script>
+</body>
+</html>
