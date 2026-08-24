@@ -719,7 +719,7 @@ function getMonthProd(b, mi){
 // تارجت فرع في شهر معين
 function getMonthTarget(b, mi){
   var d=DB[b];
-  if(d.monthlyTarget&&d.monthlyTarget[mi]) return d.monthlyTarget[mi];
+  if(d.monthlyTarget&&Object.keys(d.monthlyTarget).some(function(k){return d.monthlyTarget[k]>0;})) return d.monthlyTarget[mi]||0;
   var totalMos=Object.keys(d.monthlyTarget||{}).filter(function(k){return d.monthlyTarget[k]>0;}).length||12;
   return (d.totalTarget||d.target||0)/totalMos;
 }
@@ -741,7 +741,7 @@ function getActiveMonths(bns){
 function getBranchTarget(b, activeMIs){
   if(!activeMIs) activeMIs=getActiveMonths([b]);
   var d=DB[b];
-  var hasMT=d.monthlyTarget&&activeMIs.some(function(mi){return d.monthlyTarget[mi]>0;});
+  var hasMT=d.monthlyTarget&&Object.keys(d.monthlyTarget).some(function(k){return d.monthlyTarget[k]>0;});
   if(hasMT) return activeMIs.reduce(function(s,mi){return s+(d.monthlyTarget[mi]||0);},0);
   var totalMosAll=Object.keys(d.monthlyTarget||{}).filter(function(k){return d.monthlyTarget[k]>0;}).length||12;
   return (d.totalTarget||d.target||0)*(activeMIs.length/totalMosAll);
