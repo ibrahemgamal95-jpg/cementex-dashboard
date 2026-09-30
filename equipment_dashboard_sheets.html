@@ -227,6 +227,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
     <option value="">كل الحالات</option>
     <option>تعمل</option><option>صيانة</option><option>لا تعمل</option><option>حادث</option>
   </select>
+  <select class="filter-select" id="f-cost" onchange="applyFilters()"><option value="">كل مراكز التكلفة</option></select>
   <button class="filter-reset" onclick="resetFilters()">↺ إعادة تعيين</button>
   <span id="filter-count"></span>
 </div>
@@ -369,7 +370,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
       <table class="data-table">
         <thead><tr>
           <th>#</th><th>الفرع</th><th>نوع المعدة</th><th>رقم اللوحة</th>
-          <th>الطراز</th><th>سنة الصنع</th><th>الحجم</th><th>الحالة</th><th>فئة العمر</th>
+          <th>الطراز</th><th>رقم الشاسية</th><th>سنة الصنع</th><th>الحجم</th><th>الحالة</th><th>مركز التكلفة</th><th>فئة العمر</th><th>ملاحظات</th>
         </tr></thead>
         <tbody id="detail-tbody"></tbody>
       </table>
@@ -388,7 +389,7 @@ const TYPE_COLORS   = ['#2563eb','#0ea5e9','#10b981','#f59e0b','#8b5cf6','#ec489
 const STATUS_COLORS = {'تعمل':'#10b981','صيانة':'#f59e0b','حادث':'#8b5cf6','لا تعمل':'#ef4444'};
 
 let DATA = [], filtered = [], charts = {};
-let COL = {branch:'الفرع',type:'المعدة',plate:'رقم اللوحة',model:'الطراز',year:'الموديل',size:'الحجم',status:'الحالة'};
+let COL = {branch:'الفرع',type:'المعدة',plate:'رقم اللوحة',model:'الطراز',chassis:'رقم الشاسية',year:'الموديل',size:'الحجم',status:'الحالة',costCenter:'مركز التكلفة',notes:'ملاحظات'};
 
 // ===== LOAD DATA =====
 function loadData() {
@@ -442,13 +443,17 @@ function showErr(msg) {
 function detectColumns(headers) {
   const h = headers.map(x => String(x||'').trim());
   const find = kws => { for(const k of kws){ const i=h.findIndex(c=>c.includes(k)); if(i>=0)return h[i]; } return null; };
-  COL.branch = find(['فرع','branch','Branch']) || h[0];
-  COL.type   = find(['معدة','نوع','type','Type']) || h[1];
-  COL.plate  = find(['لوحة','plate','Plate']) || h[2];
-  COL.model  = find(['طراز','model','Model','ماركة']) || h[3];
-  COL.year   = find(['موديل','سنة','year','Year']) || h[5];
-  COL.size   = find(['حجم','size','Size']) || h[6];
-  COL.status = find(['حالة','status','Status']) || h[7];
+  // الأعمدة: الفرع,المعدة,رقم اللوحة,الطراز,رقم الشاسية,الموديل,الحجم,الحالة,مركز التكلفة,ملاحظات
+  COL.branch      = find(['فرع','branch','Branch'])                                    || h[0];
+  COL.type        = find(['معدة','نوع','type','Type'])                                  || h[1];
+  COL.plate       = find(['لوحة','plate','Plate'])                                     || h[2];
+  COL.model       = find(['طراز','model','Model','ماركة'])                             || h[3];
+  COL.chassis     = find(['شاسية','chassis','Chassis','vin','VIN'])                    || h[4];
+  COL.year        = find(['موديل','سنة','year','Year'])                                || h[5];
+  COL.size        = find(['حجم','size','Size'])                                        || h[6];
+  COL.status      = find(['حالة','status','Status'])                                   || h[7];
+  COL.costCenter  = find(['مركز التكلفة','مركز تكلفة','cost center','Cost Center'])   || h[8] || null;
+  COL.notes       = find(['ملاحظات','notes','Notes','ملاحظة'])                         || h[9] || null;
 }
 
 function cleanStatus(s) {
@@ -467,16 +472,19 @@ function ageCat(y) {
 }
 function parseRows(json) {
   return json.map(r => ({
-    branch: String(r[COL.branch]||'').trim()||'غير محدد',
-    type:   String(r[COL.type]||'').trim()||'غير محدد',
-    plate:  String(r[COL.plate]||'').trim()||'—',
-    model:  String(r[COL.model]||'').trim()||'—',
-    year:   cleanYear(r[COL.year]),
-    size:   r[COL.size]||null,
-    sizeNum:parseFloat(String(r[COL.size]||'').replace(/[^\d.]/g,''))||null,
-    status: cleanStatus(r[COL.status]),
-    ageCat: ageCat(cleanYear(r[COL.year])),
-    age:    cleanYear(r[COL.year]) ? CURRENT_YEAR-cleanYear(r[COL.year]) : null
+    branch:     String(r[COL.branch]||'').trim()||'غير محدد',
+    type:       String(r[COL.type]||'').trim()||'غير محدد',
+    plate:      String(r[COL.plate]||'').trim()||'—',
+    model:      String(r[COL.model]||'').trim()||'—',
+    chassis:    COL.chassis ? String(r[COL.chassis]||'').trim()||'—' : '—',
+    year:       cleanYear(r[COL.year]),
+    size:       r[COL.size]||null,
+    sizeNum:    parseFloat(String(r[COL.size]||'').replace(/[^\d.]/g,''))||null,
+    status:     cleanStatus(r[COL.status]),
+    ageCat:     ageCat(cleanYear(r[COL.year])),
+    age:        cleanYear(r[COL.year]) ? CURRENT_YEAR-cleanYear(r[COL.year]) : null,
+    costCenter: COL.costCenter ? String(r[COL.costCenter]||'').trim()||'—' : '—',
+    notes:      COL.notes ? String(r[COL.notes]||'').trim()||'' : ''
   })).filter(r => r.branch!=='غير محدد' || r.type!=='غير محدد');
 }
 
@@ -486,17 +494,26 @@ function populateFilters() {
   const types    = [...new Set(DATA.map(d=>d.type))].sort();
   document.getElementById('f-branch').innerHTML = '<option value="">كل الفروع</option>' + branches.map(b=>`<option>${b}</option>`).join('');
   document.getElementById('f-type').innerHTML   = '<option value="">كل الأنواع</option>'  + types.map(t=>`<option>${t}</option>`).join('');
+  const costCenters = [...new Set(DATA.map(d=>d.costCenter).filter(c=>c&&c!=='—'))].sort();
+  const fCost = document.getElementById('f-cost');
+  if(costCenters.length>0){
+    fCost.innerHTML = '<option value="">كل مراكز التكلفة</option>' + costCenters.map(c=>`<option>${c}</option>`).join('');
+    fCost.style.display='';
+  } else {
+    fCost.style.display='none';
+  }
 }
 function applyFilters() {
   const fb=document.getElementById('f-branch').value;
   const ft=document.getElementById('f-type').value;
   const fs=document.getElementById('f-status').value;
-  filtered = DATA.filter(d=>(!fb||d.branch===fb)&&(!ft||d.type===ft)&&(!fs||d.status===fs));
-  document.getElementById('filter-count').textContent = (fb||ft||fs)?`← ${filtered.length} معدة`:'';
+  const fc=document.getElementById('f-cost').value;
+  filtered = DATA.filter(d=>(!fb||d.branch===fb)&&(!ft||d.type===ft)&&(!fs||d.status===fs)&&(!fc||d.costCenter===fc));
+  document.getElementById('filter-count').textContent = (fb||ft||fs||fc)?`← ${filtered.length} معدة`:'';
   renderAll();
 }
 function resetFilters() {
-  ['f-branch','f-type','f-status'].forEach(id=>document.getElementById(id).value='');
+  ['f-branch','f-type','f-status','f-cost'].forEach(id=>document.getElementById(id).value='');
   filtered=[...DATA]; document.getElementById('filter-count').textContent=''; renderAll();
 }
 
@@ -695,10 +712,13 @@ function renderP7(){
       <td>${d.type}</td>
       <td style="direction:ltr;text-align:left;font-size:11px">${d.plate}</td>
       <td>${d.model}</td>
+      <td style="direction:ltr;text-align:left;font-size:10px;color:var(--text-dim)">${d.chassis}</td>
       <td>${d.year||'—'}</td>
       <td>${d.size||'—'}</td>
       <td><span class="status-badge ${sc[d.status]||'s-broken'}">${d.status}</span></td>
+      <td style="font-size:11px;color:var(--teal)">${d.costCenter}</td>
       <td style="font-size:10px;color:var(--text-dim)">${d.ageCat}</td>
+      <td style="font-size:11px;color:var(--orange)">${d.notes}</td>
     </tr>`).join('');
   document.getElementById('table-badge').textContent=filtered.length+' سجل';
 }
