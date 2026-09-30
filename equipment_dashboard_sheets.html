@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تقرير تحليل المعدات — Cementex</title>
+<title>ØªÙØ±ÙØ± ØªØ­ÙÙÙ Ø§ÙÙØ¹Ø¯Ø§Øª â Cementex</title>
 
-<!-- Chart.js من CDN موثوق -->
+<!-- Chart.js ÙÙ CDN ÙÙØ«ÙÙ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
-<!-- SheetJS للقراءة من Excel -->
+<!-- SheetJS ÙÙÙØ±Ø§Ø¡Ø© ÙÙ Excel -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<!-- خط عربي -->
+<!-- Ø®Ø· Ø¹Ø±Ø¨Ù -->
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -178,57 +178,57 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 
 <!-- LOADING SCREEN -->
 <div id="loading-screen">
-  <div class="ld-icon">📊</div>
-  <div class="ld-title">تقرير تحليل المعدات</div>
+  <div class="ld-icon">ð</div>
+  <div class="ld-title">ØªÙØ±ÙØ± ØªØ­ÙÙÙ Ø§ÙÙØ¹Ø¯Ø§Øª</div>
   <div class="ld-sub">Cementex Equipment Dashboard</div>
   <div class="spinner"></div>
-  <div id="ld-msg">جاري التحميل من Google Sheets...</div>
+  <div id="ld-msg">Ø¬Ø§Ø±Ù Ø§ÙØªØ­ÙÙÙ ÙÙ Google Sheets...</div>
   <div id="ld-err">
-    <p id="ld-err-msg">حدث خطأ</p>
-    <button onclick="retryLoad()">🔄 إعادة المحاولة</button>
+    <p id="ld-err-msg">Ø­Ø¯Ø« Ø¶Ø·Ø£</p>
+    <button onclick="retryLoad()">ð Ø¥Ø¹Ø§Ø¯Ø© Ø§ÙÙØ­Ø§ÙÙØ©</button>
   </div>
 </div>
 
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-logo">
-    <div class="icon">📊</div>
+    <div class="icon">ð</div>
     <div>
-      <span>تحليل المعدات</span>
+      <span>ØªØ­ÙÙÙ Ø§ÙÙØ¹Ø¯Ø§Øª</span>
       <small>Equipment Fleet Analytics</small>
     </div>
   </div>
   <div class="topbar-meta">
-    <span class="badge-live">● مباشر</span>
+    <span class="badge-live">â ÙØ¨Ø§Ø´Ø±</span>
     <span id="last-update"></span>
-    <button class="btn-top btn-refresh" onclick="loadData()">🔄 تحديث البيانات</button>
+    <button class="btn-top btn-refresh" onclick="loadData()">ð ØªØ­Ø¯ÙØ« Ø§ÙØ¨ÙØ§ÙØ§Øª</button>
   </div>
 </div>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-  <div class="nav-section">الصفحات</div>
-  <div class="nav-item active" onclick="showPage('p1',this)"><span class="nav-icon">🏠</span> النظرة العامة</div>
-  <div class="nav-item" onclick="showPage('p2',this)"><span class="nav-icon">🏢</span> تحليل الفروع</div>
-  <div class="nav-item" onclick="showPage('p3',this)"><span class="nav-icon">🔧</span> أنواع المعدات</div>
-  <div class="nav-item" onclick="showPage('p4',this)"><span class="nav-icon">🚛</span> الطرازات</div>
-  <div class="nav-item" onclick="showPage('p5',this)"><span class="nav-icon">📅</span> سنوات الصنع</div>
-  <div class="nav-section" style="margin-top:8px">تقارير</div>
-  <div class="nav-item" onclick="showPage('p6',this)"><span class="nav-icon">📦</span> تقرير الحجم</div>
-  <div class="nav-item" onclick="showPage('p7',this)"><span class="nav-icon">📋</span> جدول تفصيلي</div>
+  <div class="nav-section">Ø§ÙØµÙØ­Ø§Øª</div>
+  <div class="nav-item active" onclick="showPage('p1',this)"><span class="nav-icon">ð </span> Ø§ÙÙØ¸Ø±Ø© Ø§ÙØ¹Ø§ÙØ©</div>
+  <div class="nav-item" onclick="showPage('p2',this)"><span class="nav-icon">ð¢</span> ØªØ­ÙÙÙ Ø§ÙÙØ±ÙØ¹</div>
+  <div class="nav-item" onclick="showPage('p3',this)"><span class="nav-icon">ð§</span> Ø£ÙÙØ§Ø¹ Ø§ÙÙØ¹Ø¯Ø§Øª</div>
+  <div class="nav-item" onclick="showPage('p4',this)"><span class="nav-icon">ð</span> Ø§ÙØ·Ø±Ø§Ø²Ø§Øª</div>
+  <div class="nav-item" onclick="showPage('p5',this)"><span class="nav-icon">ð</span> Ø³ÙÙØ§Øª Ø§ÙØµÙØ¹</div>
+  <div class="nav-section" style="margin-top:8px">ØªÙØ§Ø±ÙØ±</div>
+  <div class="nav-item" onclick="showPage('p6',this)"><span class="nav-icon">ð¦</span> ØªÙØ±ÙØ± Ø§ÙÙØ· Ø§ÙØ­Ø¬Ù</div>
+  <div class="nav-item" onclick="showPage('p7',this)"><span class="nav-icon">ð</span> Ø¬Ø¯ÙÙ ØªÙØµÙÙÙ</div>
 </div>
 
 <!-- FILTERS -->
 <div class="filters-bar">
-  <span class="filter-label">الفلاتر:</span>
-  <select class="filter-select" id="f-branch" onchange="applyFilters()"><option value="">كل الفروع</option></select>
-  <select class="filter-select" id="f-type" onchange="applyFilters()"><option value="">كل الأنواع</option></select>
+  <span class="filter-label">Ø§ÙÙÙØ§ØªØ³:</span>
+  <select class="filter-select" id="f-branch" onchange="applyFilters()"><option value="">ÙÙ Ø§ÙÙØ±ÙØ¹</option></select>
+  <select class="filter-select" id="f-type" onchange="applyFilters()"><option value="">ÙÙ Ø§ÙØ£ÙÙØ§Ø¹</option></select>
   <select class="filter-select" id="f-status" onchange="applyFilters()">
-    <option value="">كل الحالات</option>
-    <option>تعمل</option><option>صيانة</option><option>لا تعمل</option><option>حادث</option>
+    <option value="">ÙÙ Ø§ÙØ­Ø§ÙØ§Øª</option>
+    <option>ØªØ¹ÙÙ</option><option>ØµÙØ§ÙØ©</option><option>ÙØ§ ØªØ¹ÙÙ</option><option>Ø­Ø§Ø¯Ø«</option>
   </select>
-  <select class="filter-select" id="f-cost" onchange="applyFilters()"><option value="">كل مراكز التكلفة</option></select>
-  <button class="filter-reset" onclick="resetFilters()">↺ إعادة تعيين</button>
+  <select class="filter-select" id="f-cost" onchange="applyFilters()"><option value="">ÙÙ ÙØ±Ø§ÙØ² Ø§ÙØªÙÙÙØ©</option></select>
+  <button class="filter-reset" onclick="resetFilters()">âº Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙÙÙ</button>
   <span id="filter-count"></span>
 </div>
 
@@ -238,120 +238,120 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 <!-- P1: OVERVIEW -->
 <div class="page active" id="p1">
   <div class="page-header">
-    <div><div class="page-title">🏠 النظرة <span>العامة</span></div><div class="page-desc">ملخص شامل لأسطول المعدات</div></div>
-    <span class="page-badge" id="p1-badge">—</span>
+    <div><div class="page-title">ð  Ø§ÙÙØ¸Ø±Ø© <span>Ø§ÙØ¹Ø§ÙØ©</span></div><div class="page-desc">ÙÙØ±Øµ Ø´Ø§ÙÙ ÙØ£Ø³Ø·ÙÙ Ø§ÙÙØ¹Ø¯Ø§Øª</div></div>
+    <span class="page-badge" id="p1-badge">â</span>
   </div>
   <div class="kpi-grid">
-    <div class="kpi-card blue"><div class="kpi-label">إجمالي المعدات</div><div class="kpi-value" id="kv-total">—</div><div class="kpi-sub" id="ks-total">—</div><div class="kpi-icon">⚙️</div></div>
-    <div class="kpi-card green"><div class="kpi-label">تعمل</div><div class="kpi-value" id="kv-op">—</div><div class="kpi-sub" id="ks-op">—</div><div class="kpi-icon">✅</div></div>
-    <div class="kpi-card orange"><div class="kpi-label">صيانة</div><div class="kpi-value" id="kv-maint">—</div><div class="kpi-sub" id="ks-maint">—</div><div class="kpi-icon">🔨</div></div>
-    <div class="kpi-card red"><div class="kpi-label">حوادث / لا تعمل</div><div class="kpi-value" id="kv-broken">—</div><div class="kpi-sub" id="ks-broken">—</div><div class="kpi-icon">⚠️</div></div>
-    <div class="kpi-card teal"><div class="kpi-label">متوسط عمر الأسطول</div><div class="kpi-value" id="kv-age">—</div><div class="kpi-sub">سنة</div><div class="kpi-icon">📅</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Ø¥Ø¬ÙØ§ÙÙ Ø§ÙÙØ¹Ø¯Ø§Øª</div><div class="kpi-value" id="kv-total">â</div><div class="kpi-sub" id="ks-total">â</div><div class="kpi-icon">âï¸</div></div>
+    <div class="kpi-card green"><div class="kpi-label">ØªØ¹ÙÙ</div><div class="kpi-value" id="kv-op">â</div><div class="kpi-sub" id="ks-op">â</div><div class="kpi-icon">â</div></div>
+    <div class="kpi-card orange"><div class="kpi-label">ØµÙØ§ÙØ©</div><div class="kpi-value" id="kv-maint">â</div><div class="kpi-sub" id="ks-maint">â</div><div class="kpi-icon">ð¨</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Ø­ÙØ§Ø¯Ø« / ÙØ§ ØªØ¹ÙÙ</div><div class="kpi-value" id="kv-broken">â</div><div class="kpi-sub" id="ks-broken">â</div><div class="kpi-icon">â ï¸</div></div>
+    <div class="kpi-card teal"><div class="kpi-label">ÙØªÙØ³Ø· Ø¹ÙØ± Ø§ÙØ£Ø³Ø·ÙÙ</div><div class="kpi-value" id="kv-age">â</div><div class="kpi-sub">Ø³ÙØ©</div><div class="kpi-icon">ð</div></div>
   </div>
   <div class="charts-grid-2">
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>توزيع المعدات حسب الفروع</div><div class="chart-sub">عدد المعدات في كل فرع</div><div class="chart-wrap" style="height:220px"><canvas id="ch-branches"></canvas></div></div>
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>توزيع أنواع المعدات</div><div class="chart-sub">النسبة من إجمالي الأسطول</div><div class="chart-wrap" style="height:220px"><canvas id="ch-types-donut"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>ØªÙØ²ÙØ¹ Ø§ÙÙØ¹Ø¯Ø§Øª Ø­Ø³Ø¨ Ø§ÙÙØ±ÙØ¹</div><div class="chart-sub">Ø¹Ø¯Ø¯ Ø§ÙÙØ¹Ø¯Ø§Øª ÙÙ ÙÙ ÙØ±Ø¹</div><div class="chart-wrap" style="height:220px"><canvas id="ch-branches"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>ØªÙØ²ÙØ¹ Ø£ÙÙØ§Ø¹ Ø§ÙÙØ¹Ø¯Ø§Øª</div><div class="chart-sub">Ø§ÙÙØ³Ø¨Ø© ÙÙ Ø¥Ø¬ÙØ§ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ</div><div class="chart-wrap" style="height:220px"><canvas id="ch-types-donut"></canvas></div></div>
   </div>
   <div style="height:16px"></div>
   <div class="charts-grid-2">
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>حالة الأسطول</div><div class="chart-sub">تعمل / صيانة / حادث</div><div class="chart-wrap" style="height:200px"><canvas id="ch-status-donut"></canvas></div></div>
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>فئات أعمار الأسطول</div><div class="chart-sub">تصنيف المعدات حسب عمرها</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-cats"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>Ø­Ø§ÙØ© Ø§ÙØ£Ø³Ø·ÙÙ</div><div class="chart-sub">ØªØ¹ÙÙ / ØµÙØ§ÙØ© / Ø­Ø§Ø¯Ø«</div><div class="chart-wrap" style="height:200px"><canvas id="ch-status-donut"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>ÙØ¦Ø§Øª Ø£Ø¹ÙØ§Ø± Ø§ÙØ£Ø³Ø·ÙÙ</div><div class="chart-sub">ØªØµÙÙÙ Ø§ÙÙØ¹Ø¯Ø§Øª Ø­Ø³Ø¨ Ø¹ÙØ±ÙØ§</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-cats"></canvas></div></div>
   </div>
 </div>
 
 <!-- P2: BRANCHES -->
 <div class="page" id="p2">
   <div class="page-header">
-    <div><div class="page-title">🏢 تحليل <span>الفروع</span></div><div class="page-desc">مقارنة مفصّلة للمعدات داخل كل فرع</div></div>
+    <div><div class="page-title">ð¢ ØªØ­ÙÙÙ <span>Ø§ÙÙØ±ÙØ¹</span></div><div class="page-desc">ÙÙØ§Ø±ÙØ© ÙÙØµÙÙØ© ÙÙÙØ¹Ø¯Ø§Øª Ø¯Ø§Ø®Ù ÙÙ ÙØ±Ø¹</div></div>
   </div>
   <div class="charts-grid-2">
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>المعدات لكل فرع</div><div class="chart-sub">مقارنة أعداد المعدات</div><div class="chart-wrap" style="height:230px"><canvas id="ch-branch-bar"></canvas></div></div>
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>حالة المعدات لكل فرع</div><div class="chart-sub">تعمل / صيانة / حادث</div><div class="chart-wrap" style="height:230px"><canvas id="ch-branch-status"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>Ø§ÙÙØ¹Ø¯Ø§Øª ÙÙÙ ÙØ±Ø¹</div><div class="chart-sub">ÙÙØ§Ø±ÙØ© Ø£Ø¹Ø¯Ø§Ø¯ Ø§ÙÙØ¹Ø¯Ø§Øª</div><div class="chart-wrap" style="height:230px"><canvas id="ch-branch-bar"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>Ø­Ø§ÙØ© Ø§ÙÙØ¹Ø¯Ø§Øª ÙÙÙ ÙØ±Ø¹</div><div class="chart-sub">ØªØ¹ÙÙ / ØµÙØ§ÙØ© / Ø­Ø§Ø¯Ø«</div><div class="chart-wrap" style="height:230px"><canvas id="ch-branch-status"></canvas></div></div>
   </div>
   <div style="height:16px"></div>
-  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>توزيع أنواع المعدات حسب الفروع</div><div class="chart-sub">Stacked Bar</div><div class="chart-wrap" style="height:250px"><canvas id="ch-branch-stacked"></canvas></div></div>
-  <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--purple)"></span>مصفوفة الفرع × نوع المعدة</div><div class="chart-sub">عدد كل نوع في كل فرع</div><div class="matrix-wrap"><table class="matrix-table" id="matrix-table"></table></div></div>
+  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>ØªÙØ²ÙØ¹ Ø£ÙÙØ§Ø¹ Ø§ÙÙØ¹Ø¯Ø§Øª Ø­Ø³Ø¨ Ø§ÙÙØ±ÙØ¹</div><div class="chart-sub">Stacked Bar</div><div class="chart-wrap" style="height:250px"><canvas id="ch-branch-stacked"></canvas></div></div>
+  <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--purple)"></span>ÙØµÙÙÙØ© Ø§ÙÙØ±Ø¹ Ã ÙÙØ¹ Ø§ÙÙØ¹Ø¯Ø©</div><div class="chart-sub">Ø¹Ø¯Ø¯ ÙÙ ÙÙØ¹ ÙÙ ÙÙ ÙØ±Ø¹</div><div class="matrix-wrap"><table class="matrix-table" id="matrix-table"></table></div></div>
 </div>
 
 <!-- P3: TYPES -->
 <div class="page" id="p3">
   <div class="page-header">
-    <div><div class="page-title">🔧 تحليل أنواع <span>المعدات</span></div><div class="page-desc">توزيع كل نوع معدة عبر الفروع</div></div>
+    <div><div class="page-title">ð§ ØªØ­ÙÙÙ Ø£ÙÙØ§Ø¹ <span>Ø§ÙÙØ¹Ø¯Ø§Øª</span></div><div class="page-desc">ØªÙØ²ÙØ¹ ÙÙ ÙÙØ¹ ÙØ¹Ø¯Ø© Ø¹Ø¨Ø± Ø§ÙÙØ±ÙØ¹</div></div>
   </div>
   <div class="charts-grid-3">
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>أكثر الأنواع</div><div class="chart-sub">ترتيب تنازلي</div><div class="progress-list" id="type-progress" style="margin-top:6px"></div></div>
-    <div class="chart-card no-mb" style="grid-column:span 2"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>توزيع كل نوع على الفروع</div><div class="chart-sub">Grouped Bar</div><div class="chart-wrap" style="height:240px"><canvas id="ch-type-branch"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>Ø£ÙØ«Ø± Ø§ÙØ£ÙÙØ§Ø¹</div><div class="chart-sub">ØªØ±ØªÙØ¨ ØªÙØ§Ø²ÙÙ</div><div class="progress-list" id="type-progress" style="margin-top:6px"></div></div>
+    <div class="chart-card no-mb" style="grid-column:span 2"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>ØªÙØ²ÙØ¹ ÙÙ ÙÙØ¹ Ø¹ÙÙ Ø§ÙÙØ±ÙØ¹</div><div class="chart-sub">Grouped Bar</div><div class="chart-wrap" style="height:240px"><canvas id="ch-type-branch"></canvas></div></div>
   </div>
   <div style="height:16px"></div>
   <div class="charts-grid-2">
-    <div class="chart-card no-mb"><div class="chart-title" id="type1-title"><span class="dot" style="background:var(--orange)"></span>—</div><div class="chart-wrap" style="height:220px"><canvas id="ch-type1-dist"></canvas></div></div>
-    <div class="chart-card no-mb"><div class="chart-title" id="type2-title"><span class="dot" style="background:var(--green)"></span>—</div><div class="chart-wrap" style="height:220px"><canvas id="ch-type2-dist"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title" id="type1-title"><span class="dot" style="background:var(--orange)"></span>â</div><div class="chart-wrap" style="height:220px"><canvas id="ch-type1-dist"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title" id="type2-title"><span class="dot" style="background:var(--green)"></span>â</div><div class="chart-wrap" style="height:220px"><canvas id="ch-type2-dist"></canvas></div></div>
   </div>
 </div>
 
 <!-- P4: MODELS -->
 <div class="page" id="p4">
   <div class="page-header">
-    <div><div class="page-title">🚛 تحليل <span>الطرازات</span></div><div class="page-desc">الشركات المصنّعة وتوزيع الطرازات</div></div>
+    <div><div class="page-title">ð ØªØ­ÙÙÙ <span>Ø§ÙØ·Ø±Ø§Ø²Ø§Øª</span></div><div class="page-desc">Ø§ÙØ´Ø±ÙØ§Øª Ø§ÙÙØµÙÙØ¹Ø© ÙØªÙØ²ÙØ¹ Ø§ÙØ·Ø±Ø§Ø²Ø§Øª</div></div>
   </div>
   <div class="charts-grid-2">
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>أكثر الطرازات تكراراً</div><div class="chart-sub">Top 8 طرازات</div><div class="chart-wrap" style="height:250px"><canvas id="ch-models-bar"></canvas></div></div>
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>حصة كل طراز</div><div class="chart-sub">نسبة من الإجمالي</div><div class="chart-wrap" style="height:250px"><canvas id="ch-models-pie"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>Ø£ÙØ«Ø± Ø§ÙØ·Ø±Ø§Ø²Ø§Øª ØªÙØ±Ø§Ø±Ø§Ù</div><div class="chart-sub">Top 8 Ø·Ø±Ø§Ø²Ø§Øª</div><div class="chart-wrap" style="height:250px"><canvas id="ch-models-bar"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>Ø­ØµØ© ÙÙ Ø·Ø±Ø§Ø²</div><div class="chart-sub">ÙØ³Ø¨Ø© ÙÙ Ø§ÙØ¥Ø¬ÙØ§ÙÙ</div><div class="chart-wrap" style="height:250px"><canvas id="ch-models-pie"></canvas></div></div>
   </div>
   <div style="height:16px"></div>
-  <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>أبرز إحصائيات الطرازات</div><div class="chart-sub">أعلى 4 طرازات</div><div id="model-highlights" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:12px"></div></div>
+  <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>Ø£Ø¨Ø±Ø² Ø¥Ø­ØµØ§Ø¦ÙØ§Øª Ø§ÙØ·Ø±Ø§Ø²Ø§Øª</div><div class="chart-sub">Ø£Ø¹ÙÙ 4 Ø·Ø±Ø§Ø²Ø§Øª</div><div id="model-highlights" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:12px"></div></div>
 </div>
 
 <!-- P5: YEARS -->
 <div class="page" id="p5">
   <div class="page-header">
-    <div><div class="page-title">📅 تحليل <span>سنوات الصنع</span></div><div class="page-desc">عمر الأسطول والمعدات القديمة</div></div>
+    <div><div class="page-title">ð ØªØ­ÙÙÙ <span>Ø³ÙÙØ§Øª Ø§ÙØµÙØ¹</span></div><div class="page-desc">Ø¹ÙØ± Ø§ÙØ£Ø³Ø·ÙÙ ÙØ§ÙÙØ¹Ø¯Ø§Øª Ø§ÙÙØ¯ÙÙØ©</div></div>
   </div>
   <div class="kpi-grid-4">
-    <div class="kpi-card red"><div class="kpi-label">أقدم معدة</div><div class="kpi-value" id="kv-oldest">—</div><div class="kpi-sub" id="ks-oldest">—</div><div class="kpi-icon">🏚️</div></div>
-    <div class="kpi-card green"><div class="kpi-label">أحدث معدة</div><div class="kpi-value" id="kv-newest">—</div><div class="kpi-sub" id="ks-newest">—</div><div class="kpi-icon">✨</div></div>
-    <div class="kpi-card teal"><div class="kpi-label">متوسط العمر</div><div class="kpi-value" id="kv-avg-age">—</div><div class="kpi-sub">سنة</div><div class="kpi-icon">⏱️</div></div>
-    <div class="kpi-card orange"><div class="kpi-label">معدات قديمة جداً</div><div class="kpi-value" id="kv-old">—</div><div class="kpi-sub" id="ks-old">أكثر من 15 سنة</div><div class="kpi-icon">⚠️</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Ø£ÙØ¯Ù ÙØ¹Ø¯Ø©</div><div class="kpi-value" id="kv-oldest">â</div><div class="kpi-sub" id="ks-oldest">â</div><div class="kpi-icon">ðï¸</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Ø£Ø­Ø¯Ø« ÙØ¹Ø¯Ø©</div><div class="kpi-value" id="kv-newest">â</div><div class="kpi-sub" id="ks-newest">â</div><div class="kpi-icon">â¨</div></div>
+    <div class="kpi-card teal"><div class="kpi-label">ÙØªÙØ³Ø· Ø§ÙØ¹ÙØ±</div><div class="kpi-value" id="kv-avg-age">â</div><div class="kpi-sub">Ø³ÙØ©</div><div class="kpi-icon">â±ï¸</div></div>
+    <div class="kpi-card orange"><div class="kpi-label">ÙØ¹Ø¯Ø§Øª ÙØ¯ÙÙØ© Ø¬Ø¯Ø§Ù</div><div class="kpi-value" id="kv-old">â</div><div class="kpi-sub" id="ks-old">Ø£ÙØ«Ø± ÙÙ 15 Ø³ÙØ©</div><div class="kpi-icon">â ï¸</div></div>
   </div>
-  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>المعدات حسب سنة الصنع</div><div class="chart-sub">عدد المعدات المضافة كل سنة</div><div class="chart-wrap" style="height:220px"><canvas id="ch-years-line"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>Ø§ÙÙØ¹Ø¯Ø§Øª Ø­Ø³Ø¨ Ø³ÙØ© Ø§ÙØµÙØ¹</div><div class="chart-sub">Ø¹Ø¯Ø¯ Ø§ÙÙØ¹Ø¯Ø§Øª Ø§ÙÙØ·Ø§ÙØ© ÙÙ Ø³ÙØ©</div><div class="chart-wrap" style="height:220px"><canvas id="ch-years-line"></canvas></div></div>
   <div class="charts-grid-2">
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>فئات الأعمار</div><div class="chart-sub">تصنيف المعدات حسب عمرها</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-bar"></canvas></div></div>
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>نسب فئات الأعمار</div><div class="chart-sub">توزيع دائري</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-pie"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>ÙØ¦Ø§Øª Ø§ÙØ£Ø¹ÙØ§Ø±</div><div class="chart-sub">ØªØµÙÙÙ Ø§ÙÙØ¹Ø¯Ø§Øª Ø­Ø³Ø¨ Ø¹ÙØ±ÙØ§</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-bar"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>ÙØ³Ø¨ ÙØ¦Ø§Øª Ø§ÙØ£Ø¹ÙØ§Ø±</div><div class="chart-sub">ØªÙØ²ÙØ¹ Ø¯Ø§Ø¦Ø±Ù</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-pie"></canvas></div></div>
   </div>
 </div>
 
 <!-- P6: VOLUME REPORT -->
 <div class="page" id="p6">
   <div class="page-header">
-    <div><div class="page-title">📦 تقرير <span>الحجم</span></div><div class="page-desc">إجمالي حجم المعدات (m³) موزعاً على الفروع</div></div>
-    <span class="page-badge" id="p6-badge">—</span>
+    <div><div class="page-title">ð¦ ØªÙØ±ÙØ± <span>Ø§ÙØ­Ø¬Ù</span></div><div class="page-desc">Ø¥Ø¬ÙØ§ÙÙ Ø­Ø¬Ù Ø§ÙÙØ¹Ø¯Ø§Øª (mÃ³) ÙÙØ²Ø¹Ø§Ù Ø¹ÙÙ Ø§ÙÙØ±ÙØ¹</div></div>
+    <span class="page-badge" id="p6-badge">â</span>
   </div>
   <div class="kpi-grid">
-    <div class="kpi-card blue"><div class="kpi-label">إجمالي الحجم الكلي</div><div class="kpi-value" id="kv-vol-total">—</div><div class="kpi-sub">m³ إجمالي الأسطول</div><div class="kpi-icon">📦</div></div>
-    <div class="kpi-card green"><div class="kpi-label">أكبر فرع حجماً</div><div class="kpi-value" id="kv-vol-max">—</div><div class="kpi-sub" id="ks-vol-max">—</div><div class="kpi-icon">🏆</div></div>
-    <div class="kpi-card teal"><div class="kpi-label">متوسط الحجم / فرع</div><div class="kpi-value" id="kv-vol-avg">—</div><div class="kpi-sub">m³</div><div class="kpi-icon">📊</div></div>
-    <div class="kpi-card orange"><div class="kpi-label">أكثر حجم تكراراً</div><div class="kpi-value" id="kv-vol-common">—</div><div class="kpi-sub" id="ks-vol-common">—</div><div class="kpi-icon">🔢</div></div>
-    <div class="kpi-card red"><div class="kpi-label">بلا حجم محدد</div><div class="kpi-value" id="kv-vol-missing">—</div><div class="kpi-sub" id="ks-vol-missing">—</div><div class="kpi-icon">❓</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Ø¥Ø¬ÙØ§ÙÙ Ø§ÙØ­Ø¬Ù Ø§ÙÙÙÙ</div><div class="kpi-value" id="kv-vol-total">â</div><div class="kpi-sub">mÃ³ igmalÙ Ø§ÙÙÙÙ Ø§ÙØ£Ø³Ø·ÙÙ</div><div class="kpi-icon">ð¦</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Ø£ÙØ¨Ø± ÙØ±Ø¹ Ø­Ø¬ÙØ§Ù</div><div class="kpi-value" id="kv-vol-max">â</div><div class="kpi-sub" id="ks-vol-max">â</div><div class="kpi-icon">ð</div></div>
+    <div class="kpi-card teal"><div class="kpi-label">ÙØªÙØ³Ø· Ø§ÙØ­Ø¬Ù / ÙØ±Ø¹</div><div class="kpi-value" id="kv-vol-avg">â</div><div class="kpi-sub">mÃ³</div><div class="kpi-icon">ð</div></div>
+    <div class="kpi-card orange"><div class="kpi-label">Ø£ÙØ«Ø± Ø­Ø¬Ù ØªÙØ±Ø§Ø±Ø§Ù</div><div class="kpi-value" id="kv-vol-common">â</div><div class="kpi-sub" id="ks-vol-common">â</div><div class="kpi-icon">ð¢</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Ø¨ÙØ§ Ø­Ø¬Ù ÙØ­Ø¯Ø¯</div><div class="kpi-value" id="kv-vol-missing">â</div><div class="kpi-sub" id="ks-vol-missing">â</div><div class="kpi-icon">â</div></div>
   </div>
   <div class="charts-grid-2">
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>إجمالي الحجم (m³) لكل فرع</div><div class="chart-sub">مجموع حجم المعدات في كل فرع</div><div class="chart-wrap" style="height:240px"><canvas id="ch-vol-bar"></canvas></div></div>
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>نسبة الحجم لكل فرع</div><div class="chart-sub">حصة كل فرع من إجمالي الحجم</div><div class="chart-wrap" style="height:240px"><canvas id="ch-vol-pie"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>Ø¥Ø¬ÙØ§ÙÙ Ø§ÙØ­Ø¬Ù (mÂ³) ÙÙÙ ÙØ±Ø¹</div><div class="chart-sub">ÙØ¬ÙÙØ¹ Ø­Ø¬Ù Ø§ÙÙØ¹Ø¯Ø§Øª ÙÙ ÙÙ ÙØ±Ø¹</div><div class="chart-wrap" style="height:240px"><canvas id="ch-vol-bar"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--teal)"></span>ÙØ³Ø¨Ø© Ø§ÙØ­Ø¬Ù ÙÙÙ ÙØ±Ø¹</div><div class="chart-sub">Ø­ØµØ© ÙÙ ÙØ±Ø¹ ÙÙ Ø¥Ø¬ÙØ§ÙÙ Ø§ÙØ­Ø¬Ù</div><div class="chart-wrap" style="height:240px"><canvas id="ch-vol-pie"></canvas></div></div>
   </div>
   <div style="height:16px"></div>
   <div class="charts-grid-2">
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>توزيع الأحجام (m³)</div><div class="chart-sub">عدد المعدات حسب كل حجم</div><div class="chart-wrap" style="height:210px"><canvas id="ch-vol-sizes"></canvas></div></div>
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>متوسط الحجم لكل فرع</div><div class="chart-sub">المتوسط الحسابي لحجم المعدات</div><div class="chart-wrap" style="height:210px"><canvas id="ch-vol-avg-branch"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>ØªÙØ²ÙØ¹ Ø§ÙØ£Ø­Ø¬Ø§Ù (mÂ³)</div><div class="chart-sub">Ø¹Ø¯Ø¯ Ø§ÙÙØ¹Ø¯Ø§Øª Ø­Ø³Ø¨ ÙÙ Ø­Ø¬Ù</div><div class="chart-wrap" style="height:210px"><canvas id="ch-vol-sizes"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>ÙØªÙØ³Ø· Ø§ÙØ­Ø¬Ù ÙÙÙ ÙØ±Ø¹</div><div class="chart-sub">Ø§ÙÙØªÙØ³Ø· Ø§ÙØ­Ø³b©Ø© f Ø­Ø¬Ù Ø§ÙÙØ¹Ø¯Ø§Øª	</div><div class="chart-wrap" style="height:210px"><canvas id="ch-vol-avg-branch"></canvas></div></div>
   </div>
   <div style="height:16px"></div>
-  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--purple)"></span>توزيع الأحجام حسب الفروع</div><div class="chart-sub">Stacked — عدد معدات كل حجم في كل فرع</div><div class="chart-wrap" style="height:260px"><canvas id="ch-vol-stacked"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--purple)"></span>ØªÙØ²ÙØ¹ Ø§ÙØ£Ø­Ø¬Ø§Ù (mÂ³)	</div><div class="chart-sub">Stacked â Ø¹ÙØ¯ ÙØ¹Ø¯Ø§Øª ÙÙ Ø­Ø¬Ù ÙÙ ÙÙ ÙØ±Ø¹</div><div class="chart-wrap" style="height:260px"><canvas id="ch-vol-stacked"></canvas></div></div>
   <div class="chart-card no-mb">
-    <div class="chart-title"><span class="dot" style="background:var(--blue-light)"></span>جدول ملخص الحجم لكل فرع</div>
-    <div class="chart-sub">إجمالي وتفاصيل الأحجام لكل فرع</div>
+    <div class="chart-title"><span class="dot" style="background:var(--blue-light)"></span>Ø¬Ø¯ÙÙ ÙÙØ­Øµ Ø§ÙØ­Ø¬Ù ÙÙÙ ÙØ±Ø¹</div>
+    <div class="chart-sub">Ø¥Ø¬ÙØ§ÙÙ ÙØªÙØ§ØµÙÙ Ø§ÙØ£Ø­Ø¬Ø§Ù ÙÙÙ ÙØ±Ø¹</div>
     <div class="matrix-wrap">
       <table class="matrix-table" id="vol-table">
         <thead><tr>
-          <th>الفرع</th><th>عدد المعدات</th><th>إجمالي الحجم (m³)</th>
-          <th>النسبة</th><th>متوسط الحجم</th><th>أصغر</th><th>أكبر</th>
+          <th>Ø§ÙÙØ±Ø¹ </th><th>Ø¹Ø¯Ø¯ Ø§ÙÙØ¹Ø¯Ø§Øª</th><th>Ø¥Ø¬ÙØ§ÙÙ Ø§ÙØ­Ø¬Ù (mÂ³)	</th>
+          <th>Ø§ÙÙØ³Ø¨Ø©</th><th>ÙØªÙØ³Ø· Ø§ÙØ­Ø¬Ù	</th><th>Ø£ØµØºØ±</th><th>Ø§ÙØ£ÙØ«Ø±</th>
         </tr></thead>
         <tbody id="vol-tbody"></tbody>
       </table>
@@ -359,18 +359,18 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
-<!-- P7: DETAIL TABLE -->
+<!-- P7: DETAIL TABLE E -->
 <div class="page" id="p7">
   <div class="page-header">
-    <div><div class="page-title">📋 الجدول <span>التفصيلي</span></div><div class="page-desc">كل سجلات المعدات</div></div>
-    <span class="page-badge" id="table-badge">—</span>
+    <div><div class="page-title">ð Ø§ÙØ¬Ø¯ÙÙ <span>Ø§ÙØªÙØµÙÙÙ9</span></div><div class="page-desc">ÙÙÙ Ø³Ø¬ÙØ§Øª Ø§ÙÙØ¹Ø¯Ø§Øª</div></div>
+    <span class="page-badge" id="table-badge">â</span>
   </div>
   <div class="chart-card no-mb">
     <div class="table-wrap">
       <table class="data-table">
         <thead><tr>
-          <th>#</th><th>الفرع</th><th>نوع المعدة</th><th>رقم اللوحة</th>
-          <th>الطراز</th><th>رقم الشاسية</th><th>سنة الصنع</th><th>الحجم</th><th>الحالة</th><th>مركز التكلفة</th><th>فئة العمر</th><th>ملاحظات</th>
+          <th>#</th><th>Ø§ÙÙØ±Ø¹</th><th>ÙÙØ¹ Ø§ÙÙØ¹Ø¯Ø©	</th><th>Ø±ÙÙ Ø§ÙÙÙØ­Øª'</th>
+          <th>Ø§ÙØ·Ø±Ø§Ø²</th><th>Ø±ÙÙ Ø§ÙØ´Ø§Ø³ÙØ©</th><th>Ø³ÙØ© Ø§ÙØµÙØ¹</th><th>Ø§ÙØ­Ø¬Ù</th><th>Ø§ÙØ­Ø§ÙØ©</th><th>ÙØ±ÙØ² Ø§ÙØªÙÙÙØ©</th><th>ÙØ¦Ø© Ø§ÙØ¹ÙØ±</th><th>ÙÙØ§Ø­Ø¸Ø§Øª</th>
         </tr></thead>
         <tbody id="detail-tbody"></tbody>
       </table>
@@ -382,27 +382,27 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 
 <script>
 // ===== CONSTANTS =====
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLlP7IeYwORjrXpx8LPGAAPHz5MbHkj-Rt_rQtVt9_13y-mwaVKdOJW4M0Mp4NgQ4/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLIP7IeYwORjrXpx8LPGAAPHz5MbHkj-Rt_rQtVt9_13y-mwaVKdOJW4M0Mp4NgQ4/exec';
 const CURRENT_YEAR = 2026;
 const BRANCH_COLORS = ['#2563eb','#0ea5e9','#10b981','#f59e0b','#8b5cf6','#ec4899','#f97316','#06b6d4'];
 const TYPE_COLORS   = ['#2563eb','#0ea5e9','#10b981','#f59e0b','#8b5cf6','#ec4899','#f97316','#06b6d4','#84cc16','#a78bfa'];
-const STATUS_COLORS = {'تعمل':'#10b981','صيانة':'#f59e0b','حادث':'#8b5cf6','لا تعمل':'#ef4444'};
+const STATUS_COLORS = {'operating':'#10b981','waiting':'#f59e0b','repairing':'#8b5cf6','leasing':'#ef4444'};
 
 let DATA = [], filtered = [], charts = {};
-let COL = {branch:'الفرع',type:'المعدة',plate:'رقم اللوحة',model:'الطراز',chassis:'رقم الشاسية',year:'الموديل',size:'الحجم',status:'الحالة',costCenter:'مركز التكلفة',notes:'ملاحظات'};
+let COL = {branch:'Ø§ÙÙØ±Ø¹',id:'Ø§ÙÙØ¹Ø¯Ø©',id:'Ø±ÙÙ Ø§ÙÙÙØ­Ø©',type:'Ø§ÙÙØ¹Ø¯Ø©',plate:'Ø±ÙÙ Ø§ÙÙÙØ­Ø©',model:'Ø§ÙØ·Ø±Ø§Ø²',chassis:'Ø±ÙÙ Ø§ÙØ´Ø§Ø³ÙØ©',year:'Ø§ÙÙÙØ¯ÙÙ',size:'Ø§ÙØ­Ø¬Ù',status:'Ø§ÙØ­Ø§ÙØ©',costCenter:'ÙØ±ÙØ² Ø§ÙØªÙÙÙØ©',notes:'ÙÙØ§Ø­Ø¸Ø§Øª'};
 
 // ===== LOAD DATA =====
 function loadData() {
-  showLoading(true, 'جاري التحميل من Google Sheets...');
-  const url = APPS_SCRIPT_URL + '?nocache=' + Date.now();
+  showLoading(true,'Jarib tahmeel min Google Sheets...');
+  const url = APPSESSION_URL + '?nocache=' + Date.now();
   fetch(url)
     .then(r => {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
     })
     .then(json => {
-      if (!json || !json.length) throw new Error('البيانات فارغة');
-      showLoading(true, 'جاري تحليل البيانات...');
+      if (!json || !json.length) throw new Error('Ø§ÙØ¨ÙØ§ÙØ§Øª ÙØ§Ø±ØºØj¨');
+      showLoading(true,'Ø¬Ø§Ø±Ù ØªØ­ÙÙÙ Ø§ÙØ¨ÙØ§ÙØ§Øª...');
       const headers = Object.keys(json[0]);
       detectColumns(headers);
       DATA = parseRows(json);
@@ -411,12 +411,12 @@ function loadData() {
       renderAll();
       const now = new Date();
       document.getElementById('last-update').textContent =
-        'آخر تحديث: ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+        'Ù§Ø¬Ø² ØªØ­Ø¯ÙÙ«: ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
       showLoading(false);
     })
     .catch(err => {
-      showErr('❌ فشل التحميل: ' + err.message +
-        '\n\nتأكد من إعدادات Apps Script:\nDeploy → Who has access → Anyone');
+      showErr(â ÙØ´Ù Ø§ÙØªØ­ÙÙÙ: ' + err.message +
+        '\n\nØªØ£ÙØ¯ ÙÙ Ø¥Ø¹Ø«Ø§Ø¯b Apps Script:\nDeploy â Who has access â Anyone');
     });
 }
 
@@ -431,73 +431,74 @@ function showLoading(v, msg) {
   if (msg) document.getElementById('ld-msg').textContent = msg;
 }
 
-function showErr(msg) {
+function showErr(text) {
   document.getElementById('ld-msg').style.display = 'none';
-  document.querySelector('.spinner').style.display = 'none';
+  document.querySelector('spinner').style.display = 'none';
   const e = document.getElementById('ld-err');
   e.style.display = 'block';
-  document.getElementById('ld-err-msg').innerHTML = msg.replace(/\n/g,'<br>');
+  document.getElementById('ld-err-msg').innerHTML = text.replace(/\n/g,'<br>');
 }
 
-// ===== COLUMN DETECT =====
+// ===== COLMAN DETECT =====
 function detectColumns(headers) {
   const h = headers.map(x => String(x||'').trim());
   const find = kws => { for(const k of kws){ const i=h.findIndex(c=>c.includes(k)); if(i>=0)return h[i]; } return null; };
-  // الأعمدة: الفرع,المعدة,رقم اللوحة,الطراز,رقم الشاسية,الموديل,الحجم,الحالة,مركز التكلفة,ملاحظات
-  COL.branch      = find(['فرع','branch','Branch'])                                    || h[0];
-  COL.type        = find(['معدة','نوع','type','Type'])                                  || h[1];
-  COL.plate       = find(['لوحة','plate','Plate'])                                     || h[2];
-  COL.model       = find(['طراز','model','Model','ماركة'])                             || h[3];
-  COL.chassis     = find(['شاسية','chassis','Chassis','vin','VIN'])                    || h[4];
-  COL.year        = find(['موديل','سنة','year','Year'])                                || h[5];
-  COL.size        = find(['حجم','size','Size'])                                        || h[6];
-  COL.status      = find(['حالة','status','Status'])                                   || h[7];
-  COL.costCenter  = find(['مركز التكلفة','مركز تكلفة','cost center','Cost Center'])   || h[8] || null;
-  COL.notes       = find(['ملاحظات','notes','Notes','ملاحظة'])                         || h[9] || null;
+
+  // Ø§ÙØ£Ø¹ÙØ¯Ø©: Ø§ÙÙØ±Ø¹,Ø§ÙÙØ¹Ø¯Ø©,Ø±ÙÙ Ø§ÙÙÙØ­Ø©,Ø§ÙØ·Ø±Ø§Ø²,Ø±ÙÙ Ø§ÙØ´Ø§Ø³ÙØ©,Ø§ÙÙÙØ¯ÙÙ,Ø§ÙØ­Ø¬Ù,Ø§ÙØ­Ø§ÙØ©,ÙØ±ÙØ² Ø§ÙØªÙÙÙØ©,ÙÙØ§Ø­Ø¸Ø§Øª
+  COL.branch      = find(['ÙØ±Ø¹','branch','Branch'])                                    || h[0];
+  COL.type        = find(['ÙØ¹Ø¯Ø©','ÙÙØ¹','type','Type'])                                  || h[1];
+  COL.plate       = find(['ÙÙØ­Ø©','plate','Plate'])                                     || h[2];
+  COL.model       = find(['Ø·Ø±Ø§Ø²','model','Model','ÙØ§Ø±ÙØ©'])                             || h[3];
+  COL.chassis     = find(['Ø´Ø§Ø³ÙØ©','chassis','Chassis','vin','VIN'])                    || h[4];
+  COL.year        = find(['ÙÙØ¯ÙÙ','Ø³ÙØ©','year','Year'])                                || h[5];
+  COL.size        = find(['Ø­Ø¬Ù','size','Size'])                                        || h[6];
+  COL.status      = find(['Ø­Ø§ÙØ©','status','Status'])                                   || h[7];
+  COL.costCenter  = find(['ÙØ±ÙØ² Ø§ÙØªÙÙÙØ©','ÙØ±ÙØ² ØªÙÙÙØ©','cost center','Cost Center'])   || h[8] || null;
+  COL.notes       = find(['ÙÙØ§Ø­Ø¸Ø§Øª','notes','Notes','ÙÙØ§Ø­Ø¸Ø©'])                         || h[9] || null;
 }
 
 function cleanStatus(s) {
-  if(!s) return 'تعمل';
+  if(!s) return 'ØªØ¹ÙÙ';
   s = String(s).trim();
-  if(/تعمل|يعمل|working|active/i.test(s)) return 'تعمل';
-  if(/صيانة|maintenance|repair/i.test(s)) return 'صيانة';
-  if(/حادث|accident/i.test(s)) return 'حادث';
-  return 'لا تعمل';
+  if(/ØªØ¹ÙÙ|ÙØ¹ÙÙ|working|active/i.test(s)) return 'ØªØ¹ÙÙ';
+  if(/ØµÙØ§ÙØ©|maintenance|repair/i.test(s)) return 'ØµÙØ§ÙØ©';
+  if(/Ø­Ø§Ø¯Ø«|accident/i.test(s)) return 'Ø­Ø§Ø¯Ø«';
+  return 'ÙØ§ ØªØ¹ÙÙ';
 }
 function cleanYear(v) { const n=parseInt(v); return(!isNaN(n)&&n>=1980&&n<=CURRENT_YEAR)?n:null; }
 function ageCat(y) {
-  if(!y) return 'غير محدد';
+  if(!y) return 'ØºÙØ± ÙØ­Ø¯Ø¯';
   const a = CURRENT_YEAR - y;
-  return a<=5?'جديدة (0-5)':a<=10?'متوسطة (6-10)':a<=15?'قديمة (11-15)':'قديمة جداً (+15)';
+  return a<=5?'Ø¬Ø¯ÙØ¯Ø© (0-5)':a<=10?'ÙØªÙØ³Ø·Ø© (6-10)':a<=15?'ÙØ¯ÙÙØ© (11-15)':'ÙØ¯ÙÙØ© Ø¬Ø¯Ø§Ù (+15)';
 }
 function parseRows(json) {
   return json.map(r => ({
-    branch:     String(r[COL.branch]||'').trim()||'غير محدد',
-    type:       String(r[COL.type]||'').trim()||'غير محدد',
-    plate:      String(r[COL.plate]||'').trim()||'—',
-    model:      String(r[COL.model]||'').trim()||'—',
-    chassis:    COL.chassis ? String(r[COL.chassis]||'').trim()||'—' : '—',
+    branch:     String(r[COL.branch]||'').trim()||'ØºÙØ± ÙØ­Ø¯Ø¯',
+    type:       String(r[COL.type]||'').trim()||'ØºÙØ± ÙØ­Ø¯Ø¯',
+    plate:      String(r[COL.plate]||'').trim()||'â',
+    model:      String(r[COL.model]||'').trim()||'â',
+    chassis:    COL.chassis ? String(r[COL.chassis]||'').trim()||'â' : 'â',
     year:       cleanYear(r[COL.year]),
     size:       r[COL.size]||null,
     sizeNum:    parseFloat(String(r[COL.size]||'').replace(/[^\d.]/g,''))||null,
     status:     cleanStatus(r[COL.status]),
     ageCat:     ageCat(cleanYear(r[COL.year])),
     age:        cleanYear(r[COL.year]) ? CURRENT_YEAR-cleanYear(r[COL.year]) : null,
-    costCenter: COL.costCenter ? String(r[COL.costCenter]||'').trim()||'—' : '—',
+    costCenter: COL.costCenter ? String(r[COL.costCenter]||'').trim()||'â' : 'â',
     notes:      COL.notes ? String(r[COL.notes]||'').trim()||'' : ''
-  })).filter(r => r.branch!=='غير محدد' || r.type!=='غير محدد');
+  })).filter(r => r.branch!=='ØºÙØ± ÙØ­Ø¯Ø¯' || r.type!=='ØºÙØ± ÙØ­Ø¯Ø¯');
 }
 
 // ===== FILTERS =====
 function populateFilters() {
   const branches = [...new Set(DATA.map(d=>d.branch))].sort();
   const types    = [...new Set(DATA.map(d=>d.type))].sort();
-  document.getElementById('f-branch').innerHTML = '<option value="">كل الفروع</option>' + branches.map(b=>`<option>${b}</option>`).join('');
-  document.getElementById('f-type').innerHTML   = '<option value="">كل الأنواع</option>'  + types.map(t=>`<option>${t}</option>`).join('');
-  const costCenters = [...new Set(DATA.map(d=>d.costCenter).filter(c=>c&&c!=='—'))].sort();
-  const fCost = document.getElementById('f-cost');
+  document.getElementById('f-branch').innerHTML = '<option value="">ÙÙ Ø§ÙÙØ±ÙØ¹</option>' + branches.map(b=>`<option>${b}</option>`).join('');
+  document.getElementById('f-type').innerHTML   = '<option value="">ÙÙ Ø§ÙØ£ÙÙØ§Ø¹</option>'  + types.map(t=>`<option>${t}</option>`).join('');
+  const costCenters = [...new Set(DATA.map(d=>d.costCenter).filter(c=>c&&c!=='â'))].sort();
+  const fCst = document.getElementById('f-cost');
   if(costCenters.length>0){
-    fCost.innerHTML = '<option value="">كل مراكز التكلفة</option>' + costCenters.map(c=>`<option>${c}</option>`).join('');
+    fCost.innerHTML = '<option value="">ÙÙ ÙØ±Ø§ÙØ² Ø§ÙØªÙÙÙØ©</option>' + costCenters.map(c=>`<option>${c}</option>`).join('');
     fCost.style.display='';
   } else {
     fCost.style.display='none';
@@ -508,20 +509,20 @@ function applyFilters() {
   const ft=document.getElementById('f-type').value;
   const fs=document.getElementById('f-status').value;
   const fc=document.getElementById('f-cost').value;
-  filtered = DATA.filter(d=>(!fb||d.branch===fb)&&(!ft||d.type===ft)&&(!fs||d.status===fs)&&(!fc||d.costCenter===fc));
-  document.getElementById('filter-count').textContent = (fb||ft||fs||fc)?`← ${filtered.length} معدة`:'';
+  filtered = DATA.filter(d=>(!fb||d.branch===fb)&&(!ft||d.type===ft)&&(!fs||d.status===fs)&&( !fc||d.costCenter===fc));
+  document.getElementById('filter-count').textContent = (fb||ft||fs||fc)?`â ${filtered.length} ÙØ¹Ø¯Ø©`:'';
   renderAll();
 }
 function resetFilters() {
   ['f-branch','f-type','f-status','f-cost'].forEach(id=>document.getElementById(id).value='');
-  filtered=[...DATA]; document.getElementById('filter-count').textContent=''; renderAll();
+  filtered=[...DATA]; document.getElementById('filter-count').textContent='; renderAll();
 }
 
-// ===== CHART HELPERS =====
+// ===== CHART HEMPERS]
 const baseOpts = {
   responsive:true, maintainAspectRatio:false,
   plugins:{legend:{display:false},tooltip:{rtl:true,titleFont:{family:'Tajawal'},bodyFont:{family:'Tajawal'}}},
-  scales:{
+  scales: {
     x:{ticks:{color:'#94a3b8',font:{family:'Tajawal',size:10}},grid:{color:'rgba(36,48,80,.5)'}},
     y:{ticks:{color:'#94a3b8',font:{family:'Tajawal',size:10}},grid:{color:'rgba(36,48,80,.5)'}}
   }
@@ -531,38 +532,40 @@ function mc(id, config) {
   if(charts[id]) charts[id].destroy();
   charts[id] = new Chart(ctx, config);
 }
-function countBy(arr,key){const r={};arr.forEach(d=>{const v=d[key]||'غير محدد';r[v]=(r[v]||0)+1;});return r;}
+function countBy(arr,key){const r={};arr.forEach(d=>{const v=d[key]||'ØºÙØ± ÙØ­Ø¯Ø¯';r[v]=(r[v]||0)+1;});return r;}
 function sortedEntries(obj){return Object.entries(obj).sort((a,b)=>b[1]-a[1]);}
 
 // ===== RENDER ALL =====
 function renderAll(){renderP1();renderP2();renderP3();renderP4();renderP5();renderP6();renderP7();}
 
-// ===== P1: OVERVIEW =====
+// ===== P1: OVERVIEW
 function renderP1(){
-  const total=filtered.length, op=filtered.filter(d=>d.status==='تعمل').length;
-  const maint=filtered.filter(d=>d.status==='صيانة').length;
-  const broken=filtered.filter(d=>d.status==='حادث'||d.status==='لا تعمل').length;
+  const total=filtered.length, op=filtered.filter(d=>d.status==='ØªØ¹ÙÙ').length;
+  const maint=filtered.filter(d=>d.status==='ØµÙØ§ÙØ©').length;
+  const broken=filtered.filter(d=>d.status==='Ø­ÙØ¯Ø«').length;
   const ages=filtered.filter(d=>d.age).map(d=>d.age);
-  const avgAge=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'—';
+  const avgAge=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'â';
   const branches=[...new Set(filtered.map(d=>d.branch))];
   document.getElementById('kv-total').textContent=total;
-  document.getElementById('ks-total').textContent=`عبر ${branches.length} فروع`;
+  document.getElementById('ks-total').textContent=`Ø¹ÙØ¨Ø² \n${branches.length} ÙØ±ÙØ¹`;
   document.getElementById('kv-op').textContent=op;
-  document.getElementById('ks-op').textContent=total?(op/total*100).toFixed(1)+'% من الأسطول':'';
+  document.getElementById('ks-op').textContent=total?(op/total*100).toFixed(1)+'% ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ':'';
   document.getElementById('kv-maint').textContent=maint;
-  document.getElementById('ks-maint').textContent=total?(maint/total*100).toFixed(1)+'% من الأسطول':'';
+  document.getElementById('ks-maint').textContent=total?(maint/total*100).toFixed(1)+'% ÙÙ  Ø§ÙØ£Ø³Ø·ÙÙ':'';
   document.getElementById('kv-broken').textContent=broken;
-  document.getElementById('ks-broken').textContent=total?(broken/total*100).toFixed(1)+'% من الأسطول':'';
+  document.getElementById('ks-broken').textContent=total?(broken/total*100).toFixed(1)+'% ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ':'';
   document.getElementById('kv-age').textContent=avgAge;
-  document.getElementById('p1-badge').textContent=total+' معدة';
+  document.getElementById('p1-badge').textContent=total+' ÙØ¹Ø¯Ø©';
   const bC=countBy(filtered,'branch');
   const bL=Object.keys(bC).sort((a,b)=>bC[b]-bC[a]);
   mc('ch-branches',{type:'bar',data:{labels:bL,datasets:[{data:bL.map(k=>bC[k]),backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts}});
   const tC=countBy(filtered,'type'),tL=sortedEntries(tC).map(([k])=>k);
-  mc('ch-types-donut',{type:'doughnut',data:{labels:tL,datasets:[{data:tL.map(k=>tC[k]),backgroundColor:TYPE_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'65%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
+  mc('ch-types-donut',{type:'doughnut',data:{labels:tL,datasets:[{data:tL.map(k=>tC[k]),backgroundColor:TYPE_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'64%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
+  const sL=new Set(filtered.map(d=>d.status));
   const sC=countBy(filtered,'status'),sL=Object.keys(sC);
-  mc('ch-status-donut',{type:'doughnut',data:{labels:sL,datasets:[{data:sL.map(k=>sC[k]),backgroundColor:sL.map(k=>STATUS_COLORS[k]||'#64748b'),borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'60%',plugins:{...baseOpts.plugins,legend:{display:true,position:'bottom',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
-  const acL=['جديدة (0-5)','متوسطة (6-10)','قديمة (11-15)','قديمة جداً (+15)'];
+  mc('ch-status-donut',{type:'doughnut',data:{labels:sL,datasets:[{data:sL.map(k=>sC[k]),backgroundColor:sL.map(k=>STATUS_COLORS[k]||'#64748b'),borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'60%',id plugins:{...baseOpts.plugins,legend:{display:true,position:
+'bottom',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
+  const acL=['Ø¬Ø¯ÙØ¯Ø© (0-5)','ÙØªÙØ³Ø·Ø© (6-10)','ÙØ¯ÙÙØ© (11-15)','ÙØ¯ÙÙØ© Ø¬Ø¯Ø§Ù (+15)'];
   const acC=['#10b981','#0ea5e9','#f59e0b','#ef4444'];
   const acCounts=countBy(filtered,'ageCat');
   mc('ch-age-cats',{type:'bar',data:{labels:acL,datasets:[{data:acL.map(l=>acCounts[l]||0),backgroundColor:acC,borderRadius:6}]},options:{...baseOpts}});
@@ -573,21 +576,21 @@ function renderP2(){
   const branches=[...new Set(filtered.map(d=>d.branch))].sort();
   const bCounts=branches.map(b=>filtered.filter(d=>d.branch===b).length);
   mc('ch-branch-bar',{type:'bar',data:{labels:branches,datasets:[{data:bCounts,backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts,indexAxis:'y',scales:{x:baseOpts.scales.x,y:{ticks:{color:'#94a3b8',font:{family:'Tajawal',size:11}},grid:{color:'rgba(36,48,80,.5)'}}}}});
-  const statuses=['تعمل','صيانة','حادث','لا تعمل'],sClrs=['#10b981','#f59e0b','#8b5cf6','#ef4444'];
+  const statuses=['ØªØ¹ÙÙ','ØµÙØ§ÙØ©','Ø­Ø§Ø¯Ø«','ÙØ§ ØªØ¹ÙÙ'],sClrs=['#10b981','#f59e0b','#8b5cf6','#ef4444'];
   mc('ch-branch-status',{type:'bar',data:{labels:branches,datasets:statuses.map((s,i)=>({label:s,backgroundColor:sClrs[i],data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.status===s).length),borderRadius:4}))},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
   const types=[...new Set(filtered.map(d=>d.type))].sort();
   mc('ch-branch-stacked',{type:'bar',data:{labels:branches,datasets:types.map((t,i)=>({label:t,backgroundColor:TYPE_COLORS[i%TYPE_COLORS.length],data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t).length),borderRadius:2}))},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}},scales:{x:{...baseOpts.scales.x,stacked:true},y:{...baseOpts.scales.y,stacked:true}}}});
   const tbl=document.getElementById('matrix-table');
-  let html='<thead><tr><th>الفرع</th>';
+  let html='<thead><tr><th>Ø§ÙÙØ±Ø¹</th>';
   types.forEach(t=>html+=`<th>${t}</th>`);
-  html+='<th>الإجمالي</th></tr></thead><tbody>';
+  html+='<th>Ø§ÙØ¥Ø¬ÙØ§ÙÙ</th></tr></thead><tbody>';
   branches.forEach(b=>{
     const tot=filtered.filter(d=>d.branch===b).length;
     html+=`<tr><td style="text-align:right;font-weight:600;color:var(--text)">${b}</td>`;
     types.forEach(t=>{
       const v=filtered.filter(d=>d.branch===b&&d.type===t).length;
       const cls=v>=20?'mv-high':v>=5?'mv-med':v>0?'mv-low':'mv-zero';
-      html+=`<td><span class="mv ${cls}">${v||'—'}</span></td>`;
+      html+=`<td><span class="mv ${cls}">${v||'â'}</span></td>`;
     });
     html+=`<td><span class="mv mv-high">${tot}</span></td></tr>`;
   });
@@ -603,9 +606,9 @@ function renderP3(){
   const branches=[...new Set(filtered.map(d=>d.branch))].sort();
   const top6=tS.slice(0,6).map(([t])=>t);
   mc('ch-type-branch',{type:'bar',data:{labels:branches,datasets:top6.map((t,i)=>({label:t,backgroundColor:TYPE_COLORS[i],data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t).length),borderRadius:4}))},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
-  const t1=tS[0]?.[0]||'خلاطة',t2=tS[1]?.[0]||'مضخة';
-  document.getElementById('type1-title').innerHTML=`<span class="dot" style="background:var(--orange)"></span>${t1} — توزيع على الفروع`;
-  document.getElementById('type2-title').innerHTML=`<span class="dot" style="background:var(--green)"></span>${t2} — توزيع على الفروع`;
+  const t1=tS[0]?.[0]||'Ø®ÙØ§Ø·Ø©',t2=tS[1]?.[0]||'ÙØ¶Ø®Ø©';
+  document.getElementById('type1-title').innerHTML=`<span class="dot" style="background:var(--orange)"></span>${t1} â ØªÙØ²ÙØ¹ Ø¹ÙÙ Ø§ÙÙØ±ÙØ¹`;
+  document.getElementById('type2-title').innerHTML=`<span class="dot" style="background:var(--green)"></span>${t2} â ØªÙØ²ÙØ¹ Ø¹ÙÙ Ø§ÙÙØ±ÙØ¹`;
   mc('ch-type1-dist',{type:'doughnut',data:{labels:branches,datasets:[{data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t1).length),backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'55%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:8}}}}});
   mc('ch-type2-dist',{type:'doughnut',data:{labels:branches,datasets:[{data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t2).length),backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'55%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:8}}}}});
 }
@@ -613,7 +616,7 @@ function renderP3(){
 // ===== P4: MODELS =====
 function renderP4(){
   const mC=countBy(filtered,'model');
-  delete mC['—'];delete mC['غير محدد'];
+  delete mC['â'];delete mC['ØºÙØ± ÙØ­Ø¯Ø¯'];
   const mS=sortedEntries(mC).slice(0,8);
   mc('ch-models-bar',{type:'bar',data:{labels:mS.map(([k])=>k),datasets:[{data:mS.map(([,v])=>v),backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts}});
   mc('ch-models-pie',{type:'pie',data:{labels:mS.map(([k])=>k),datasets:[{data:mS.map(([,v])=>v),backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
@@ -624,9 +627,9 @@ function renderP4(){
   document.getElementById('model-highlights').innerHTML=mS.slice(0,4).map(([k,v],i)=>`
     <div style="background:${hlBg[i]};border:1px solid ${hlBr[i]};border-radius:10px;padding:14px;text-align:center">
       <div style="font-size:20px;font-weight:800;color:${hlC[i]}">${k}</div>
-      <div style="font-size:11px;color:var(--text-muted);margin-top:4px">${['الأكثر','الثاني','الثالث','الرابع'][i]}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px">${['Ø§ÙØ£ÙØ«Ø±','Ø§ÙØ«Ø§ÙÙ','Ø§ÙØ«Ø§ÙØ«','Ø§ÙØ±Ø§Ø¨Ø¹'][i]}</div>
       <div style="font-size:22px;font-weight:700;color:var(--text);margin-top:6px">${v}</div>
-      <div style="font-size:10px;color:var(--text-dim)">${(v/total*100).toFixed(1)}% من الأسطول</div>
+      <div style="font-size:10px;color:var(--text-dim)">${(v/total*100).toFixed(1)}% ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ</div>
     </div>`).join('');
 }
 
@@ -635,17 +638,17 @@ function renderP5(){
   const yMap={};
   filtered.forEach(d=>{if(d.year)yMap[d.year]=(yMap[d.year]||0)+1;});
   const years=Object.keys(yMap).map(Number).sort((a,b)=>a-b);
-  document.getElementById('kv-oldest').textContent=years[0]||'—';
-  document.getElementById('ks-oldest').textContent=years[0]?`عمر ${CURRENT_YEAR-years[0]} سنة`:'';
-  document.getElementById('kv-newest').textContent=years[years.length-1]||'—';
-  document.getElementById('ks-newest').textContent=years[years.length-1]?`عمر ${CURRENT_YEAR-years[years.length-1]} سنة`:'';
+  document.getElementById('kv-oldest').textContent=years[0]||'â';
+  document.getElementById('ks-oldest').textContent=years[0]?`Ø¹ÙØ± ${CURRENT_YEAR-years[0]} Ø³ÙØ©`:'';
+  document.getElementById('kv-newest').textContent=years[years.length-1]||'â';
+  document.getElementById('ks-newest').textContent=years[years.length-1]?`Ø¹ÙØ± ${CURRENT_YEAR-years[years.length-1]} Ø³ÙØ©`:'';
   const ages=filtered.filter(d=>d.age).map(d=>d.age);
-  document.getElementById('kv-avg-age').textContent=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'—';
+  document.getElementById('kv-avg-age').textContent=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'â';
   const oldCount=filtered.filter(d=>d.age&&d.age>15).length;
   document.getElementById('kv-old').textContent=oldCount;
-  document.getElementById('ks-old').textContent=filtered.length?`${(oldCount/filtered.length*100).toFixed(1)}% من الأسطول`:'';
+  document.getElementById('ks-old').textContent=filtered.length?`${(oldCount/filtered.length*100).toFixed(1)}% ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ`:'';
   mc('ch-years-line',{type:'bar',data:{labels:years,datasets:[{data:years.map(y=>yMap[y]),backgroundColor:years.map(y=>y>=CURRENT_YEAR-5?'#10b981':y>=CURRENT_YEAR-15?'#0ea5e9':'#ef4444'),borderRadius:4}]},options:{...baseOpts}});
-  const acL=['جديدة (0-5)','متوسطة (6-10)','قديمة (11-15)','قديمة جداً (+15)'];
+  const acL=['Ø¬Ø¯ÙØ¯Ø© (0-5)','ÙØªÙØ³Ø·Ø© (6-10)','ÙØ¯ÙÙØ© (11-15)','ÙØ¯ÙÙØ© Ø¬Ø¯Ø§Ù (+15)'];
   const acC=['#10b981','#0ea5e9','#f59e0b','#ef4444'];
   const acCounts=countBy(filtered,'ageCat');
   mc('ch-age-bar',{type:'bar',data:{labels:acL,datasets:[{data:acL.map(l=>acCounts[l]||0),backgroundColor:acC,borderRadius:6}]},options:{...baseOpts}});
@@ -664,47 +667,47 @@ function renderP6(){
   const sizeMap={};
   hasSz.forEach(d=>{sizeMap[d.sizeNum]=(sizeMap[d.sizeNum]||0)+1;});
   const commonSz=Object.entries(sizeMap).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('kv-vol-total').textContent=totalVol||'—';
-  document.getElementById('p6-badge').textContent=hasSz.length+' معدة بحجم محدد';
-  document.getElementById('kv-vol-max').textContent=maxB||'—';
-  document.getElementById('ks-vol-max').textContent=maxB?(branchVol[maxB])+' m³':'';
-  document.getElementById('kv-vol-avg').textContent=activeBranches.length?(totalVol/activeBranches.length).toFixed(0):'—';
-  document.getElementById('kv-vol-common').textContent=commonSz?commonSz[0]+' m³':'—';
-  document.getElementById('ks-vol-common').textContent=commonSz?commonSz[1]+' معدة':'';
+  document.getElementById('kv-vol-total').textContent=totalVol||'â';
+  document.getElementById('p6-badge').textContent=hasSz.length+' ÙØ¹Ø¯Ø© Ø¨Ø­Ø¬Ù ÙØ­Ø¯Ø¯';
+  document.getElementById('kv-vol-max').textContent=maxB||'â';
+  document.getElementById('ks-vol-max').textContent=maxB?(branchVol[maxB])+' mÂ³':'';
+  document.getElementById('kv-vol-avg').textContent=activeBranches.length?(totalVol/activeBranches.length).toFixed(0):'â';
+  document.getElementById('kv-vol-common').textContent=commonSz?commonSz[0]+' mÂ³':'â';
+  document.getElementById('ks-vol-common').textContent=commonSz?commonSz[1]+' ÙØ¹Ø¯Ø©':'';
   const missing=filtered.filter(d=>!d.sizeNum).length;
   document.getElementById('kv-vol-missing').textContent=missing;
-  document.getElementById('ks-vol-missing').textContent=filtered.length?(missing/filtered.length*100).toFixed(1)+'% من الأسطول':'';
+  document.getElementById('ks-vol-missing').textContent=filtered.length?(missing/filtered.length*100).toFixed(1)+'% ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ':'';
   const bVals=branches.map(b=>branchVol[b]);
-  mc('ch-vol-bar',{type:'bar',data:{labels:branches,datasets:[{data:bVals,backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:c=>` ${c.parsed.y} m³`}}}}});
-  mc('ch-vol-pie',{type:'doughnut',data:{labels:branches,datasets:[{data:bVals,backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'55%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:8}},tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed} m³`}}}}});
+  mc('ch-vol-bar',{type:'bar',data:{labels:branches,datasets:[{data:bVals,backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:c=>` ${c.parsed.y} mÂ³`}}}}});
+  mc('ch-vol-pie',{type:'doughnut',data:{labels:branches,datasets:[{data:bVals,backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'55%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:8}},tooltip:{callbacks:{label:c=>`${c.label}: ${c.parsed} mÂ³`}}}}});
   const sizeKeys=Object.keys(sizeMap).map(Number).sort((a,b)=>a-b);
-  mc('ch-vol-sizes',{type:'bar',data:{labels:sizeKeys.map(s=>s+' m³'),datasets:[{data:sizeKeys.map(s=>sizeMap[s]),backgroundColor:TYPE_COLORS,borderRadius:6}]},options:{...baseOpts}});
+  mc('ch-vol-sizes',{type:'bar',data:{labels:sizeKeys.map(s=>s+' mÂ³'),datasets:[{data:sizeKeys.map(s=>sizeMap[s]),backgroundColor:TYPE_COLORS,borderRadius:6}]},options:{...baseOpts}});
   const branchAvg=branches.map(b=>{const d=filtered.filter(x=>x.branch===b&&x.sizeNum);return d.length?(d.reduce((s,x)=>s+x.sizeNum,0)/d.length).toFixed(1):0;});
-  mc('ch-vol-avg-branch',{type:'bar',data:{labels:branches,datasets:[{data:branchAvg,backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:c=>` ${c.parsed.y} m³ متوسط`}}}}});
-  mc('ch-vol-stacked',{type:'bar',data:{labels:branches,datasets:sizeKeys.map((s,i)=>({label:s+' m³',backgroundColor:TYPE_COLORS[i%TYPE_COLORS.length],data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.sizeNum===s).length),borderRadius:2}))},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}},scales:{x:{...baseOpts.scales.x,stacked:true},y:{...baseOpts.scales.y,stacked:true}}}});
+  mc('ch-vol-avg-branch',{type:'bar',data:{labels:branches,datasets:[{data:branchAvg,backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{callbacks:{label:c=>` ${c.parsed.y} mÂ³ ÙØªÙØ³Ø·`}}}}});
+  mc('ch-vol-stacked',{type:'bar',data:{labels:branches,datasets:sizeKeys.map((s,i)=>({label:s+' mÂ³',backgroundColor:TYPE_COLORS[i%TYPE_COLORS.length],data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.sizeNum===s).length),borderRadius:2}))},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}},scales:{x:{...baseOpts.scales.x,stacked:true},y:{...baseOpts.scales.y,stacked:true}}}});
   document.getElementById('vol-tbody').innerHTML=branches.map(b=>{
     const bd=filtered.filter(d=>d.branch===b&&d.sizeNum);
     const tot=bd.reduce((s,d)=>s+d.sizeNum,0);
-    const avg=bd.length?(tot/bd.length).toFixed(1):'—';
-    const min=bd.length?Math.min(...bd.map(d=>d.sizeNum)):'—';
-    const max=bd.length?Math.max(...bd.map(d=>d.sizeNum)):'—';
+    const avg=bd.length?(tot/bd.length).toFixed(1):'â';
+    const min=bd.length?Math.min(...bd.map(d=>d.sizeNum)):'â';
+    const max=bd.length?Math.max(...bd.map(d=>d.sizeNum)):'â';
     const count=filtered.filter(d=>d.branch===b).length;
     const pct=totalVol?Math.round(tot/totalVol*100):0;
     return `<tr>
       <td style="text-align:right;font-weight:600;color:var(--text)">${b}</td>
       <td><span class="mv mv-med">${count}</span></td>
-      <td><span class="mv mv-high">${tot} m³</span></td>
+      <td><span class="mv mv-high">${tot} mÂ³</span></td>
       <td><span style="font-size:11px;color:var(--text-dim)">${pct}%</span></td>
-      <td><span class="mv mv-low">${avg} m³</span></td>
-      <td style="color:var(--text-muted)">${min}${min!=='—'?' m³':''}</td>
-      <td style="color:var(--teal);font-weight:700">${max}${max!=='—'?' m³':''}</td>
+      <td><span class="mv mv-low">${avg} mÂ³</span></td>
+      <td style="color:var(--text-muted)">${min}${min!=='â'?' mÂ³':''}</td>
+      <td style="color:var(--teal);font-weight:700">${max}${max!=='â'?' mÂ³':''}</td>
     </tr>`;
   }).join('');
 }
 
 // ===== P7: TABLE =====
 function renderP7(){
-  const sc={'تعمل':'s-op','صيانة':'s-maint','لا تعمل':'s-broken','حادث':'s-accident'};
+  const sc={'ØªØ¹ÙÙ':'s-op','ØµÙØ§ÙØ©':'s-maint','ÙØ§ ØªØ¹ÙÙ':'s-broken','Ø­Ø§Ø¯Ø«':'s-accident'};
   document.getElementById('detail-tbody').innerHTML=filtered.map((d,i)=>`
     <tr>
       <td style="color:var(--text-dim)">${i+1}</td>
@@ -713,14 +716,14 @@ function renderP7(){
       <td style="direction:ltr;text-align:left;font-size:11px">${d.plate}</td>
       <td>${d.model}</td>
       <td style="direction:ltr;text-align:left;font-size:10px;color:var(--text-dim)">${d.chassis}</td>
-      <td>${d.year||'—'}</td>
-      <td>${d.size||'—'}</td>
+      <td>${d.year||'â'}</td>
+      <td>${d.size||'â'}</td>
       <td><span class="status-badge ${sc[d.status]||'s-broken'}">${d.status}</span></td>
       <td style="font-size:11px;color:var(--teal)">${d.costCenter}</td>
       <td style="font-size:10px;color:var(--text-dim)">${d.ageCat}</td>
       <td style="font-size:11px;color:var(--orange)">${d.notes}</td>
     </tr>`).join('');
-  document.getElementById('table-badge').textContent=filtered.length+' سجل';
+  document.getElementById('table-badge').textContent=filtered.length+' Ø³Ø¬Ù';
 }
 
 // ===== NAVIGATION =====
