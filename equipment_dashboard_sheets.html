@@ -184,7 +184,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
   <div class="spinner"></div>
   <div id="ld-msg">Ø¬Ø§Ø±Ù Ø§ÙØªØ­ÙÙÙ ÙÙ Google Sheets...</div>
   <div id="ld-err">
-    <p id="ld-err-msg">Ø­Ø¯Ø« Ø¶Ø·Ø£</p>
+    <p id="ld-err-msg">Ø­Ø¯Ø« Ø®Ø·Ø£</p>
     <button onclick="retryLoad()">ð Ø¥Ø¹Ø§Ø¯Ø© Ø§ÙÙØ­Ø§ÙÙØ©</button>
   </div>
 </div>
@@ -210,19 +210,19 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
   <div class="nav-section">Ø§ÙØµÙØ­Ø§Øª</div>
   <div class="nav-item active" onclick="showPage('p1',this)"><span class="nav-icon">ð </span> Ø§ÙÙØ¸Ø±Ø© Ø§ÙØ¹Ø§ÙØ©</div>
   <div class="nav-item" onclick="showPage('p2',this)"><span class="nav-icon">ð¢</span> ØªØ­ÙÙÙ Ø§ÙÙØ±ÙØ¹</div>
-  <div class="nav-item" onclick="showPage('p3',this)"><span class="nav-icon">ð§</span> Ø£ÙÙØ§Ø¹ Ø§ÙÙØ¹Ø¯Ø§Øª</div>
+  <div class="nav-item" onclick="showPage('p3',this)"><span class="nav-icon">ð§</span> Ø£ÙÙØ§Ø¹ Ø§ÙÙØ¹Ø¯Ø§Øª</div>
   <div class="nav-item" onclick="showPage('p4',this)"><span class="nav-icon">ð</span> Ø§ÙØ·Ø±Ø§Ø²Ø§Øª</div>
   <div class="nav-item" onclick="showPage('p5',this)"><span class="nav-icon">ð</span> Ø³ÙÙØ§Øª Ø§ÙØµÙØ¹</div>
   <div class="nav-section" style="margin-top:8px">ØªÙØ§Ø±ÙØ±</div>
-  <div class="nav-item" onclick="showPage('p6',this)"><span class="nav-icon">ð¦</span> ØªÙØ±ÙØ± Ø§ÙÙØ· Ø§ÙØ­Ø¬Ù</div>
+  <div class="nav-item" onclick="showPage('p6',this)"><span class="nav-icon">ð¦</span> ØªÙØ±ÙØ± Ø§ÙØ­Ø¬Ù</div>
   <div class="nav-item" onclick="showPage('p7',this)"><span class="nav-icon">ð</span> Ø¬Ø¯ÙÙ ØªÙØµÙÙÙ</div>
 </div>
 
 <!-- FILTERS -->
 <div class="filters-bar">
-  <span class="filter-label">Ø§ÙÙÙØ§ØªØ³:</span>
+  <span class="filter-label">Ø§ÙÙÙØ§ØªØ±:</span>
   <select class="filter-select" id="f-branch" onchange="applyFilters()"><option value="">ÙÙ Ø§ÙÙØ±ÙØ¹</option></select>
-  <select class="filter-select" id="f-type" onchange="applyFilters()"><option value="">ÙÙ Ø§ÙØ£ÙÙØ§Ø¹</option></select>
+  <select class="filter-select" id="f-type" onchange="applyFilters()"><option value="">ÙÙ Ø§ÙØ£ÙÙØ§Ø¹</option></select>
   <select class="filter-select" id="f-status" onchange="applyFilters()">
     <option value="">ÙÙ Ø§ÙØ­Ø§ÙØ§Øª</option>
     <option>ØªØ¹ÙÙ</option><option>ØµÙØ§ÙØ©</option><option>ÙØ§ ØªØ¹ÙÙ</option><option>Ø­Ø§Ø¯Ø«</option>
@@ -238,7 +238,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 <!-- P1: OVERVIEW -->
 <div class="page active" id="p1">
   <div class="page-header">
-    <div><div class="page-title">ð  Ø§ÙÙØ¸Ø±Ø© <span>Ø§ÙØ¹Ø§ÙØ©</span></div><div class="page-desc">ÙÙØ±Øµ Ø´Ø§ÙÙ ÙØ£Ø³Ø·ÙÙ Ø§ÙÙØ¹Ø¯Ø§Øª</div></div>
+    <div><div class="page-title">ð  Ø§ÙÙØ¸Ø±Ø© <span>Ø§ÙØ¹Ø§ÙØ©</span></div><div class="page-desc">ÙÙØ®Øµ Ø´Ø§ÙÙ ÙØ£Ø³Ø·ÙÙ Ø§ÙÙØ¹Ø¯Ø§Øª</div></div>
     <span class="page-badge" id="p1-badge">â</span>
   </div>
   <div class="kpi-grid">
@@ -313,7 +313,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
     <div class="kpi-card teal"><div class="kpi-label">ÙØªÙØ³Ø· Ø§ÙØ¹ÙØ±</div><div class="kpi-value" id="kv-avg-age">â</div><div class="kpi-sub">Ø³ÙØ©</div><div class="kpi-icon">â±ï¸</div></div>
     <div class="kpi-card orange"><div class="kpi-label">ÙØ¹Ø¯Ø§Øª ÙØ¯ÙÙØ© Ø¬Ø¯Ø§Ù</div><div class="kpi-value" id="kv-old">â</div><div class="kpi-sub" id="ks-old">Ø£ÙØ«Ø± ÙÙ 15 Ø³ÙØ©</div><div class="kpi-icon">â ï¸</div></div>
   </div>
-  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>Ø§ÙÙØ¹Ø¯Ø§Øª Ø­Ø³Ø¨ Ø³ÙØ© Ø§ÙØµÙØ¹</div><div class="chart-sub">Ø¹Ø¯Ø¯ Ø§ÙÙØ¹Ø¯Ø§Øª Ø§ÙÙØ·Ø§ÙØ© ÙÙ Ø³ÙØ©</div><div class="chart-wrap" style="height:220px"><canvas id="ch-years-line"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--blue)"></span>Ø§ÙÙØ¹Ø¯Ø§Øª Ø­Ø³Ø¨ Ø³ÙØ© Ø§ÙØµÙØ¹</div><div class="chart-sub">Ø¹Ø¯Ø¯ Ø§ÙÙØ¹Ø¯Ø§Øª Ø§ÙÙØ¶Ø§ÙØ© ÙÙ Ø³ÙØ©</div><div class="chart-wrap" style="height:220px"><canvas id="ch-years-line"></canvas></div></div>
   <div class="charts-grid-2">
     <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>ÙØ¦Ø§Øª Ø§ÙØ£Ø¹ÙØ§Ø±</div><div class="chart-sub">ØªØµÙÙÙ Ø§ÙÙØ¹Ø¯Ø§Øª Ø­Ø³Ø¨ Ø¹ÙØ±ÙØ§</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-bar"></canvas></div></div>
     <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>ÙØ³Ø¨ ÙØ¦Ø§Øª Ø§ÙØ£Ø¹ÙØ§Ø±</div><div class="chart-sub">ØªÙØ²ÙØ¹ Ø¯Ø§Ø¦Ø±Ù</div><div class="chart-wrap" style="height:200px"><canvas id="ch-age-pie"></canvas></div></div>
@@ -323,13 +323,13 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 <!-- P6: VOLUME REPORT -->
 <div class="page" id="p6">
   <div class="page-header">
-    <div><div class="page-title">ð¦ ØªÙØ±ÙØ± <span>Ø§ÙØ­Ø¬Ù</span></div><div class="page-desc">Ø¥Ø¬ÙØ§ÙÙ Ø­Ø¬Ù Ø§ÙÙØ¹Ø¯Ø§Øª (mÃ³) ÙÙØ²Ø¹Ø§Ù Ø¹ÙÙ Ø§ÙÙØ±ÙØ¹</div></div>
+    <div><div class="page-title">ð¦ ØªÙØ±ÙØ± <span>Ø§ÙØ­Ø¬Ù</span></div><div class="page-desc">Ø¥Ø¬ÙØ§ÙÙ Ø­Ø¬Ù Ø§ÙÙØ¹Ø¯Ø§Øª (mÂ³) ÙÙØ²Ø¹Ø§Ù Ø¹ÙÙ Ø§ÙÙØ±ÙØ¹</div></div>
     <span class="page-badge" id="p6-badge">â</span>
   </div>
   <div class="kpi-grid">
-    <div class="kpi-card blue"><div class="kpi-label">Ø¥Ø¬ÙØ§ÙÙ Ø§ÙØ­Ø¬Ù Ø§ÙÙÙÙ</div><div class="kpi-value" id="kv-vol-total">â</div><div class="kpi-sub">mÃ³ igmalÙ Ø§ÙÙÙÙ Ø§ÙØ£Ø³Ø·ÙÙ</div><div class="kpi-icon">ð¦</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Ø¥Ø¬ÙØ§ÙÙ Ø§ÙØ­Ø¬Ù Ø§ÙÙÙÙ</div><div class="kpi-value" id="kv-vol-total">â</div><div class="kpi-sub">mÂ³ Ø¥Ø¬ÙØ§ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ</div><div class="kpi-icon">ð¦</div></div>
     <div class="kpi-card green"><div class="kpi-label">Ø£ÙØ¨Ø± ÙØ±Ø¹ Ø­Ø¬ÙØ§Ù</div><div class="kpi-value" id="kv-vol-max">â</div><div class="kpi-sub" id="ks-vol-max">â</div><div class="kpi-icon">ð</div></div>
-    <div class="kpi-card teal"><div class="kpi-label">ÙØªÙØ³Ø· Ø§ÙØ­Ø¬Ù / ÙØ±Ø¹</div><div class="kpi-value" id="kv-vol-avg">â</div><div class="kpi-sub">mÃ³</div><div class="kpi-icon">ð</div></div>
+    <div class="kpi-card teal"><div class="kpi-label">ÙØªÙØ³Ø· Ø§ÙØ­Ø¬Ù / ÙØ±Ø¹</div><div class="kpi-value" id="kv-vol-avg">â</div><div class="kpi-sub">mÂ³</div><div class="kpi-icon">ð</div></div>
     <div class="kpi-card orange"><div class="kpi-label">Ø£ÙØ«Ø± Ø­Ø¬Ù ØªÙØ±Ø§Ø±Ø§Ù</div><div class="kpi-value" id="kv-vol-common">â</div><div class="kpi-sub" id="ks-vol-common">â</div><div class="kpi-icon">ð¢</div></div>
     <div class="kpi-card red"><div class="kpi-label">Ø¨ÙØ§ Ø­Ø¬Ù ÙØ­Ø¯Ø¯</div><div class="kpi-value" id="kv-vol-missing">â</div><div class="kpi-sub" id="ks-vol-missing">â</div><div class="kpi-icon">â</div></div>
   </div>
@@ -340,18 +340,18 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
   <div style="height:16px"></div>
   <div class="charts-grid-2">
     <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--green)"></span>ØªÙØ²ÙØ¹ Ø§ÙØ£Ø­Ø¬Ø§Ù (mÂ³)</div><div class="chart-sub">Ø¹Ø¯Ø¯ Ø§ÙÙØ¹Ø¯Ø§Øª Ø­Ø³Ø¨ ÙÙ Ø­Ø¬Ù</div><div class="chart-wrap" style="height:210px"><canvas id="ch-vol-sizes"></canvas></div></div>
-    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>ÙØªÙØ³Ø· Ø§ÙØ­Ø¬Ù ÙÙÙ ÙØ±Ø¹</div><div class="chart-sub">Ø§ÙÙØªÙØ³Ø· Ø§ÙØ­Ø³b©Ø© f Ø­Ø¬Ù Ø§ÙÙØ¹Ø¯Ø§Øª	</div><div class="chart-wrap" style="height:210px"><canvas id="ch-vol-avg-branch"></canvas></div></div>
+    <div class="chart-card no-mb"><div class="chart-title"><span class="dot" style="background:var(--orange)"></span>ÙØªÙØ³Ø· Ø§ÙØ­Ø¬Ù ÙÙÙ ÙØ±Ø¹</div><div class="chart-sub">Ø§ÙÙØªÙØ³Ø· Ø§ÙØ­Ø³Ø§Ø¨Ù ÙØ­Ø¬Ù Ø§ÙÙØ¹Ø¯Ø§Øª</div><div class="chart-wrap" style="height:210px"><canvas id="ch-vol-avg-branch"></canvas></div></div>
   </div>
   <div style="height:16px"></div>
-  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--purple)"></span>ØªÙØ²ÙØ¹ Ø§ÙØ£Ø­Ø¬Ø§Ù (mÂ³)	</div><div class="chart-sub">Stacked â Ø¹ÙØ¯ ÙØ¹Ø¯Ø§Øª ÙÙ Ø­Ø¬Ù ÙÙ ÙÙ ÙØ±Ø¹</div><div class="chart-wrap" style="height:260px"><canvas id="ch-vol-stacked"></canvas></div></div>
+  <div class="chart-card"><div class="chart-title"><span class="dot" style="background:var(--purple)"></span>ØªÙØ²ÙØ¹ Ø§ÙØ£Ø­Ø¬Ø§Ù Ø­Ø³Ø¨ Ø§ÙÙØ±ÙØ¹</div><div class="chart-sub">Stacked â Ø¹Ø¯Ø¯ ÙØ¹Ø¯Ø§Øª ÙÙ Ø­Ø¬Ù ÙÙ ÙÙ ÙØ±Ø¹</div><div class="chart-wrap" style="height:260px"><canvas id="ch-vol-stacked"></canvas></div></div>
   <div class="chart-card no-mb">
-    <div class="chart-title"><span class="dot" style="background:var(--blue-light)"></span>Ø¬Ø¯ÙÙ ÙÙØ­Øµ Ø§ÙØ­Ø¬Ù ÙÙÙ ÙØ±Ø¹</div>
+    <div class="chart-title"><span class="dot" style="background:var(--blue-light)"></span>Ø¬Ø¯ÙÙ ÙÙØ®Øµ Ø§ÙØ­Ø¬Ù ÙÙÙ ÙØ±Ø¹</div>
     <div class="chart-sub">Ø¥Ø¬ÙØ§ÙÙ ÙØªÙØ§ØµÙÙ Ø§ÙØ£Ø­Ø¬Ø§Ù ÙÙÙ ÙØ±Ø¹</div>
     <div class="matrix-wrap">
       <table class="matrix-table" id="vol-table">
         <thead><tr>
-          <th>Ø§ÙÙØ±Ø¹ </th><th>Ø¹Ø¯Ø¯ Ø§ÙÙØ¹Ø¯Ø§Øª</th><th>Ø¥Ø¬ÙØ§ÙÙ Ø§ÙØ­Ø¬Ù (mÂ³)	</th>
-          <th>Ø§ÙÙØ³Ø¨Ø©</th><th>ÙØªÙØ³Ø· Ø§ÙØ­Ø¬Ù	</th><th>Ø£ØµØºØ±</th><th>Ø§ÙØ£ÙØ«Ø±</th>
+          <th>Ø§ÙÙØ±Ø¹</th><th>Ø¹Ø¯Ø¯ Ø§ÙÙØ¹Ø¯Ø§Øª</th><th>Ø¥Ø¬ÙØ§ÙÙ Ø§ÙØ­Ø¬Ù (mÂ³)</th>
+          <th>Ø§ÙÙØ³Ø¨Ø©</th><th>ÙØªÙØ³Ø· Ø§ÙØ­Ø¬Ù</th><th>Ø£ØµØºØ±</th><th>Ø£ÙØ¨Ø±</th>
         </tr></thead>
         <tbody id="vol-tbody"></tbody>
       </table>
@@ -359,17 +359,17 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
-<!-- P7: DETAIL TABLE E -->
+<!-- P7: DETAIL TABLE -->
 <div class="page" id="p7">
   <div class="page-header">
-    <div><div class="page-title">ð Ø§ÙØ¬Ø¯ÙÙ <span>Ø§ÙØªÙØµÙÙÙ9</span></div><div class="page-desc">ÙÙÙ Ø³Ø¬ÙØ§Øª Ø§ÙÙØ¹Ø¯Ø§Øª</div></div>
+    <div><div class="page-title">ð Ø§ÙØ¬Ø¯ÙÙ <span>Ø§ÙØªÙØµÙÙÙ</span></div><div class="page-desc">ÙÙ Ø³Ø¬ÙØ§Øª Ø§ÙÙØ¹Ø¯Ø§Øª</div></div>
     <span class="page-badge" id="table-badge">â</span>
   </div>
   <div class="chart-card no-mb">
     <div class="table-wrap">
       <table class="data-table">
         <thead><tr>
-          <th>#</th><th>Ø§ÙÙØ±Ø¹</th><th>ÙÙØ¹ Ø§ÙÙØ¹Ø¯Ø©	</th><th>Ø±ÙÙ Ø§ÙÙÙØ­Øª'</th>
+          <th>#</th><th>Ø§ÙÙØ±Ø¹</th><th>ÙÙØ¹ Ø§ÙÙØ¹Ø¯Ø©</th><th>Ø±ÙÙ Ø§ÙÙÙØ­Ø©</th>
           <th>Ø§ÙØ·Ø±Ø§Ø²</th><th>Ø±ÙÙ Ø§ÙØ´Ø§Ø³ÙØ©</th><th>Ø³ÙØ© Ø§ÙØµÙØ¹</th><th>Ø§ÙØ­Ø¬Ù</th><th>Ø§ÙØ­Ø§ÙØ©</th><th>ÙØ±ÙØ² Ø§ÙØªÙÙÙØ©</th><th>ÙØ¦Ø© Ø§ÙØ¹ÙØ±</th><th>ÙÙØ§Ø­Ø¸Ø§Øª</th>
         </tr></thead>
         <tbody id="detail-tbody"></tbody>
@@ -382,27 +382,27 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min
 
 <script>
 // ===== CONSTANTS =====
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLIP7IeYwORjrXpx8LPGAAPHz5MbHkj-Rt_rQtVt9_13y-mwaVKdOJW4M0Mp4NgQ4/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzkmkAgAqAdWgbTz61BiyaNzF0b6zAzN5srxElIyp0swgQNj2wwkdwD2E3mn6IiCQH0/exec';
 const CURRENT_YEAR = 2026;
 const BRANCH_COLORS = ['#2563eb','#0ea5e9','#10b981','#f59e0b','#8b5cf6','#ec4899','#f97316','#06b6d4'];
 const TYPE_COLORS   = ['#2563eb','#0ea5e9','#10b981','#f59e0b','#8b5cf6','#ec4899','#f97316','#06b6d4','#84cc16','#a78bfa'];
-const STATUS_COLORS = {'operating':'#10b981','waiting':'#f59e0b','repairing':'#8b5cf6','leasing':'#ef4444'};
+const STATUS_COLORS = {'ØªØ¹ÙÙ':'#10b981','ØµÙØ§ÙØ©':'#f59e0b','Ø­Ø§Ø¯Ø«':'#8b5cf6','ÙØ§ ØªØ¹ÙÙ':'#ef4444'};
 
 let DATA = [], filtered = [], charts = {};
-let COL = {branch:'Ø§ÙÙØ±Ø¹',id:'Ø§ÙÙØ¹Ø¯Ø©',id:'Ø±ÙÙ Ø§ÙÙÙØ­Ø©',type:'Ø§ÙÙØ¹Ø¯Ø©',plate:'Ø±ÙÙ Ø§ÙÙÙØ­Ø©',model:'Ø§ÙØ·Ø±Ø§Ø²',chassis:'Ø±ÙÙ Ø§ÙØ´Ø§Ø³ÙØ©',year:'Ø§ÙÙÙØ¯ÙÙ',size:'Ø§ÙØ­Ø¬Ù',status:'Ø§ÙØ­Ø§ÙØ©',costCenter:'ÙØ±ÙØ² Ø§ÙØªÙÙÙØ©',notes:'ÙÙØ§Ø­Ø¸Ø§Øª'};
+let COL = {branch:'Ø§ÙÙØ±Ø¹',type:'Ø§ÙÙØ¹Ø¯Ø©',plate:'Ø±ÙÙ Ø§ÙÙÙØ­Ø©',model:'Ø§ÙØ·Ø±Ø§Ø²',chassis:'Ø±ÙÙ Ø§ÙØ´Ø§Ø³ÙØ©',year:'Ø§ÙÙÙØ¯ÙÙ',size:'Ø§ÙØ­Ø¬Ù',status:'Ø§ÙØ­Ø§ÙØ©',costCenter:'ÙØ±ÙØ² Ø§ÙØªÙÙÙØ©',notes:'ÙÙØ§Ø­Ø¸Ø§Øª'};
 
 // ===== LOAD DATA =====
 function loadData() {
-  showLoading(true,'Jarib tahmeel min Google Sheets...');
-  const url = APPSESSION_URL + '?nocache=' + Date.now();
+  showLoading(true, 'Ø¬Ø§Ø±Ù Ø§ÙØªØ­ÙÙÙ ÙÙ Google Sheets...');
+  const url = APPS_SCRIPT_URL + '?nocache=' + Date.now();
   fetch(url)
     .then(r => {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
     })
     .then(json => {
-      if (!json || !json.length) throw new Error('Ø§ÙØ¨ÙØ§ÙØ§Øª ÙØ§Ø±ØºØj¨');
-      showLoading(true,'Ø¬Ø§Ø±Ù ØªØ­ÙÙÙ Ø§ÙØ¨ÙØ§ÙØ§Øª...');
+      if (!json || !json.length) throw new Error('Ø§ÙØ¨ÙØ§ÙØ§Øª ÙØ§Ø±ØºØ©');
+      showLoading(true, 'Ø¬Ø§Ø±Ù ØªØ­ÙÙÙ Ø§ÙØ¨ÙØ§ÙØ§Øª...');
       const headers = Object.keys(json[0]);
       detectColumns(headers);
       DATA = parseRows(json);
@@ -411,12 +411,12 @@ function loadData() {
       renderAll();
       const now = new Date();
       document.getElementById('last-update').textContent =
-        'Ù§Ø¬Ø² ØªØ­Ø¯ÙÙ«: ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+        'Ø¢Ø®Ø± ØªØ­Ø¯ÙØ«: ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
       showLoading(false);
     })
     .catch(err => {
-      showErr(â ÙØ´Ù Ø§ÙØªØ­ÙÙÙ: ' + err.message +
-        '\n\nØªØ£ÙØ¯ ÙÙ Ø¥Ø¹Ø«Ø§Ø¯b Apps Script:\nDeploy â Who has access â Anyone');
+      showErr("c. ÙØ´Ù Ø§ÙØªØ­ÙÙÙ: ' + err.message +
+        "\n\nØªØ£ÙØ¯ ÙÙ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Apps Script:\nDeploy â Who has access â Anyone');
     });
 }
 
@@ -431,19 +431,18 @@ function showLoading(v, msg) {
   if (msg) document.getElementById('ld-msg').textContent = msg;
 }
 
-function showErr(text) {
+function showErr(msg) {
   document.getElementById('ld-msg').style.display = 'none';
-  document.querySelector('spinner').style.display = 'none';
+  document.querySelector('.spinner').style.display = 'none';
   const e = document.getElementById('ld-err');
   e.style.display = 'block';
-  document.getElementById('ld-err-msg').innerHTML = text.replace(/\n/g,'<br>');
+  document.getElementById('ld-err-msg').innerHTML = msg.replace(/\n/g,'<br>');
 }
 
-// ===== COLMAN DETECT =====
+// ===== COLUMN DETECT =====
 function detectColumns(headers) {
   const h = headers.map(x => String(x||'').trim());
   const find = kws => { for(const k of kws){ const i=h.findIndex(c=>c.includes(k)); if(i>=0)return h[i]; } return null; };
-
   // Ø§ÙØ£Ø¹ÙØ¯Ø©: Ø§ÙÙØ±Ø¹,Ø§ÙÙØ¹Ø¯Ø©,Ø±ÙÙ Ø§ÙÙÙØ­Ø©,Ø§ÙØ·Ø±Ø§Ø²,Ø±ÙÙ Ø§ÙØ´Ø§Ø³ÙØ©,Ø§ÙÙÙØ¯ÙÙ,Ø§ÙØ­Ø¬Ù,Ø§ÙØ­Ø§ÙØ©,ÙØ±ÙØ² Ø§ÙØªÙÙÙØ©,ÙÙØ§Ø­Ø¸Ø§Øª
   COL.branch      = find(['ÙØ±Ø¹','branch','Branch'])                                    || h[0];
   COL.type        = find(['ÙØ¹Ø¯Ø©','ÙÙØ¹','type','Type'])                                  || h[1];
@@ -496,7 +495,7 @@ function populateFilters() {
   document.getElementById('f-branch').innerHTML = '<option value="">ÙÙ Ø§ÙÙØ±ÙØ¹</option>' + branches.map(b=>`<option>${b}</option>`).join('');
   document.getElementById('f-type').innerHTML   = '<option value="">ÙÙ Ø§ÙØ£ÙÙØ§Ø¹</option>'  + types.map(t=>`<option>${t}</option>`).join('');
   const costCenters = [...new Set(DATA.map(d=>d.costCenter).filter(c=>c&&c!=='â'))].sort();
-  const fCst = document.getElementById('f-cost');
+  const fCost = document.getElementById('f-cost');
   if(costCenters.length>0){
     fCost.innerHTML = '<option value="">ÙÙ ÙØ±Ø§ÙØ² Ø§ÙØªÙÙÙØ©</option>' + costCenters.map(c=>`<option>${c}</option>`).join('');
     fCost.style.display='';
@@ -509,20 +508,20 @@ function applyFilters() {
   const ft=document.getElementById('f-type').value;
   const fs=document.getElementById('f-status').value;
   const fc=document.getElementById('f-cost').value;
-  filtered = DATA.filter(d=>(!fb||d.branch===fb)&&(!ft||d.type===ft)&&(!fs||d.status===fs)&&( !fc||d.costCenter===fc));
+  filtered = DATA.filter(d=>(!fb||d.branch===fb)&&(!ft||d.type===ft)&&(!fs||d.status===fs)&&(!fc||d.costCenter===fc));
   document.getElementById('filter-count').textContent = (fb||ft||fs||fc)?`â ${filtered.length} ÙØ¹Ø¯Ø©`:'';
   renderAll();
 }
 function resetFilters() {
   ['f-branch','f-type','f-status','f-cost'].forEach(id=>document.getElementById(id).value='');
-  filtered=[...DATA]; document.getElementById('filter-count').textContent='; renderAll();
+  filtered=[...DATA]; document.getElementById('filter-count').textContent=''; renderAll();
 }
 
-// ===== CHART HEMPERS]
+// ===== CHART HELPERS =====
 const baseOpts = {
   responsive:true, maintainAspectRatio:false,
   plugins:{legend:{display:false},tooltip:{rtl:true,titleFont:{family:'Tajawal'},bodyFont:{family:'Tajawal'}}},
-  scales: {
+  scales:{
     x:{ticks:{color:'#94a3b8',font:{family:'Tajawal',size:10}},grid:{color:'rgba(36,48,80,.5)'}},
     y:{ticks:{color:'#94a3b8',font:{family:'Tajawal',size:10}},grid:{color:'rgba(36,48,80,.5)'}}
   }
@@ -538,20 +537,20 @@ function sortedEntries(obj){return Object.entries(obj).sort((a,b)=>b[1]-a[1]);}
 // ===== RENDER ALL =====
 function renderAll(){renderP1();renderP2();renderP3();renderP4();renderP5();renderP6();renderP7();}
 
-// ===== P1: OVERVIEW
+// ===== P1: OVERVIEW =====
 function renderP1(){
-  const total=filtered.length, op=filtered.filter(d=>d.status==='ØªØ¹ÙÙ').length;
+  const total=filtered.length,naop=filtered.filter(d=>d.status==='ØªØ¹ÙÙ').length;
   const maint=filtered.filter(d=>d.status==='ØµÙØ§ÙØ©').length;
-  const broken=filtered.filter(d=>d.status==='Ø­ÙØ¯Ø«').length;
+  const broken=filtered.filter(d=>d.status==='Ø­Ø§Ø¯Ø«'||d.status==='ÙØ§ ØªØ¹ÙÙ').length;
   const ages=filtered.filter(d=>d.age).map(d=>d.age);
-  const avgAge=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'â';
+  const avgAge=ages.length?ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'â';
   const branches=[...new Set(filtered.map(d=>d.branch))];
   document.getElementById('kv-total').textContent=total;
-  document.getElementById('ks-total').textContent=`Ø¹ÙØ¨Ø² \n${branches.length} ÙØ±ÙØ¹`;
+  document.getElementById('ks-total').textContent=`Ø¹Ø¨Ø± ${branches.length} ÙØ±ÙØ¹`;
   document.getElementById('kv-op').textContent=op;
   document.getElementById('ks-op').textContent=total?(op/total*100).toFixed(1)+'% ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ':'';
   document.getElementById('kv-maint').textContent=maint;
-  document.getElementById('ks-maint').textContent=total?(maint/total*100).toFixed(1)+'% ÙÙ  Ø§ÙØ£Ø³Ø·ÙÙ':'';
+  document.getElementById('ks-maint').textContent=total?(maint/total*100).toFixed(1)+'% ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ':'';
   document.getElementById('kv-broken').textContent=broken;
   document.getElementById('ks-broken').textContent=total?(broken/total*100).toFixed(1)+'% ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ':'';
   document.getElementById('kv-age').textContent=avgAge;
@@ -560,11 +559,9 @@ function renderP1(){
   const bL=Object.keys(bC).sort((a,b)=>bC[b]-bC[a]);
   mc('ch-branches',{type:'bar',data:{labels:bL,datasets:[{data:bL.map(k=>bC[k]),backgroundColor:BRANCH_COLORS,borderRadius:6}]},options:{...baseOpts}});
   const tC=countBy(filtered,'type'),tL=sortedEntries(tC).map(([k])=>k);
-  mc('ch-types-donut',{type:'doughnut',data:{labels:tL,datasets:[{data:tL.map(k=>tC[k]),backgroundColor:TYPE_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'64%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
-  const sL=new Set(filtered.map(d=>d.status));
+  mc('ch-types-donut',{type:'doughnut',data:{labels:tL,datasets:[{data:tL.map(k=>tC[k]),backgroundColor:TYPE_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'65%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
   const sC=countBy(filtered,'status'),sL=Object.keys(sC);
-  mc('ch-status-donut',{type:'doughnut',data:{labels:sL,datasets:[{data:sL.map(k=>sC[k]),backgroundColor:sL.map(k=>STATUS_COLORS[k]||'#64748b'),borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'60%',id plugins:{...baseOpts.plugins,legend:{display:true,position:
-'bottom',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
+  mc('ch-status-donut',{type:'doughnut',data:{labels:sL,datasets:[{data:sL.map(k=>sC[k]),backgroundColor:sL.map(k=>STATUS_COLORS[k]||'#64748b'),borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'60%',plugins:{...baseOpts.plugins,legend:{display:true,position:'bottom',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
   const acL=['Ø¬Ø¯ÙØ¯Ø© (0-5)','ÙØªÙØ³Ø·Ø© (6-10)','ÙØ¯ÙÙØ© (11-15)','ÙØ¯ÙÙØ© Ø¬Ø¯Ø§Ù (+15)'];
   const acC=['#10b981','#0ea5e9','#f59e0b','#ef4444'];
   const acCounts=countBy(filtered,'ageCat');
@@ -606,9 +603,9 @@ function renderP3(){
   const branches=[...new Set(filtered.map(d=>d.branch))].sort();
   const top6=tS.slice(0,6).map(([t])=>t);
   mc('ch-type-branch',{type:'bar',data:{labels:branches,datasets:top6.map((t,i)=>({label:t,backgroundColor:TYPE_COLORS[i],data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t).length),borderRadius:4}))},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:10}}}}});
-  const t1=tS[0]?.[0]||'Ø®ÙØ§Ø·Ø©',t2=tS[1]?.[0]||'ÙØ¶Ø®Ø©';
+  const t1=tS[0]?.[0]||'Ø®ÙØ§Ø·Ø©',t2=tS[1]?.[0]||'ÙØ¸Ø®Ø©';
   document.getElementById('type1-title').innerHTML=`<span class="dot" style="background:var(--orange)"></span>${t1} â ØªÙØ²ÙØ¹ Ø¹ÙÙ Ø§ÙÙØ±ÙØ¹`;
-  document.getElementById('type2-title').innerHTML=`<span class="dot" style="background:var(--green)"></span>${t2} â ØªÙØ²ÙØ¹ Ø¹ÙÙ Ø§ÙÙØ±ÙØ¹`;
+  document.getElementById('type2-title').innerHTML=`<span class="dot" style="background:var(--green)"></span>${t2} â ØªÙØ²ÙØ¹ Ø¹ÙÙ Ø§ÙÙØ±ÙØ¹`;
   mc('ch-type1-dist',{type:'doughnut',data:{labels:branches,datasets:[{data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t1).length),backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'55%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:8}}}}});
   mc('ch-type2-dist',{type:'doughnut',data:{labels:branches,datasets:[{data:branches.map(b=>filtered.filter(d=>d.branch===b&&d.type===t2).length),backgroundColor:BRANCH_COLORS,borderWidth:2,borderColor:'#1c2840'}]},options:{...baseOpts,cutout:'55%',plugins:{...baseOpts.plugins,legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{family:'Tajawal',size:10},boxWidth:8}}}}});
 }
@@ -627,7 +624,7 @@ function renderP4(){
   document.getElementById('model-highlights').innerHTML=mS.slice(0,4).map(([k,v],i)=>`
     <div style="background:${hlBg[i]};border:1px solid ${hlBr[i]};border-radius:10px;padding:14px;text-align:center">
       <div style="font-size:20px;font-weight:800;color:${hlC[i]}">${k}</div>
-      <div style="font-size:11px;color:var(--text-muted);margin-top:4px">${['Ø§ÙØ£ÙØ«Ø±','Ø§ÙØ«Ø§ÙÙ','Ø§ÙØ«Ø§ÙØ«','Ø§ÙØ±Ø§Ø¨Ø¹'][i]}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px">${['Ø§ÙØ£ÙØ«Ø±','Ø§ÙØªØ§ÙÙ','Ø§ÙØªØ§ÙØ«','Ø§ÙØ±Ø§Ø¨Ø¹'][i]}</div>
       <div style="font-size:22px;font-weight:700;color:var(--text);margin-top:6px">${v}</div>
       <div style="font-size:10px;color:var(--text-dim)">${(v/total*100).toFixed(1)}% ÙÙ Ø§ÙØ£Ø³Ø·ÙÙ</div>
     </div>`).join('');
